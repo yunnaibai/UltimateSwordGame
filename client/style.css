@@ -1,7 +1,7 @@
 
 
 :root{
-    --main-color: #FFAC41;
+    --main-color: #ff5e41;
     --background-color: #303030;
     --secondary-color: #212121;
 }
@@ -45,6 +45,12 @@ body{
     width: 100%;
     row-gap: 10vh;
     justify-items: center;
+
+    --gradient-main-color: #ff5e4100;
+    --div-width: 102%;
+    --div-height: 102%;
+    --div-top: -1%;
+    --div-left: -1%;
     
     
 }
@@ -81,7 +87,7 @@ body{
 .login::before{
     z-index: -1;
     content: "";
-    background-image: conic-gradient(var(--main-color) 20deg, transparent 60deg);
+    background-image: conic-gradient(var(--gradient-main-color) 20deg, transparent 60deg);
     height: 200%;
     width: 200%;
     left: -50%;
@@ -104,6 +110,7 @@ body{
     padding-right: 4vw;
     padding-top: 4vh;
     padding-bottom: 4vw;
+    border-width: 10%;
 
     position: relative;
     display: flex;
@@ -122,10 +129,10 @@ body{
     content: '';
     background-color: var(--background-color);
     border-radius: 2vw;
-    width: 95%;
-    height: 96%;
-    top: 2%;
-    left: 2.5%;
+    width: var(--div-width);
+    height: var(--div-height);
+    top: var(--div-top);
+    left: var(--div-left);
     /*Wenn nichts geladen werden muss
     ToDo: animation stoppen oder "border" vergrößern
     
@@ -133,13 +140,18 @@ body{
     height: 102%;
     top: -1%;
     left: -1%;
+
+    width: 95%;
+    height: 96%;
+    top: 2%;
+    left: 2.5%;
 */  
     
 }
 .register::before{
     z-index: -1;
     content: "";
-    background-image: conic-gradient(var(--main-color) 20deg, transparent 60deg);
+    background-image: conic-gradient(var(--gradient-main-color) 20deg, transparent 60deg);
     height: 200%;
     width: 200%;
     left: -50%;
@@ -193,7 +205,7 @@ meter[value="10"]::-moz-meter-bar { background: var(--main-color) }
 .input{
     background-color: #424242;
     border-radius: 6vw;
-    height: 7.5%;
+    height: 9%;
     width: 80%;
     font-family: 'Dongle';
     color: white;
@@ -212,7 +224,8 @@ meter[value="10"]::-moz-meter-bar { background: var(--main-color) }
 .register p{
     text-align: center;
     font-size: 2.2em;
-    margin-bottom: 5vh;
+    margin-bottom: 4vh;
+    margin-top: 10vh;
 }
 .login p{
     text-align: center;
@@ -221,7 +234,8 @@ meter[value="10"]::-moz-meter-bar { background: var(--main-color) }
 
 }
 .button{
-    margin-top: 2vw;
+    margin-top: 3vh;
+    margin-bottom: 5vh;
     border-radius: 5vw;
     border: none;
     font-family: 'Dongle';
@@ -241,6 +255,7 @@ meter[value="10"]::-moz-meter-bar { background: var(--main-color) }
 .about{
     padding: 1%;
     grid-area: about;
+    text-align: center;
 
     background-color: var(--secondary-color);
     box-shadow: 0 -1vh 2vw rgba(0,0,0,0.2);

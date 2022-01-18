@@ -13,12 +13,21 @@ const login = () => {
     username = hash(loginUsername.value)
     socket.emit("getSalt", username)
     socket.on("salt", (salt) => {
-        console.log("Salt: " + salt)
-        var login = {
-            pass: hash(loginPassword + salt),
-            user: username
+        if(salt !== "404"){
+            console.log("Salt: " + salt)
+            var login = {
+                pass: hash(loginPassword + salt),
+                user: username
+            }
+            socket.emit("login",login)
+        }else{
+            console.log("CSS verändern")
+            document.getElementById("content").style.setProperty("--gradient-main-color", "#ff5e41");
+            document.getElementById("content").style.setProperty("--div-width", "95%");
+            document.getElementById("content").style.setProperty("--div-height", "96%");
+            document.getElementById("content").style.setProperty("--div-top", "2%");
+            document.getElementById("content").style.setProperty("--div-left", "2.5%");
         }
-        socket.emit("login",login)
     })
     
 

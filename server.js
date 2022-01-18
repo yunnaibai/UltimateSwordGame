@@ -30,7 +30,7 @@ io.on('connection', socket => {
     socket.emit('welcome', "Verbindung zum Server wurde hergestellt!")
 
     socket.on('getSalt', data => {
-        socket.emit('salt', salt);
+        socket.emit('salt', "404");
 
         //ToDo .then(){}
         socket.on('login', data => {
@@ -54,5 +54,11 @@ io.on('connection', socket => {
             console.log("Password&Salt(Hash): " + data.pass)
         })
     })
+
+    socket.on("disconnect", () => {
+        console.log(`${socket.id} ist disconnected`) 
+      })
 })
+
+
 
