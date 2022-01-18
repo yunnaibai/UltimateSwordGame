@@ -1,0 +1,203 @@
+
+
+:root{
+    --main-color: #FFAC41;
+    --background-color: #303030;
+    --secondary-color: #212121;
+}
+
+body{
+    background-color:var(--background-color);
+    font-family: 'Dongle';
+    color: var(--main-color);
+    margin: 0;
+    font-size: 3.5vh;
+    line-height: 2vh;
+    overflow: hidden;
+}
+.header-text{
+    margin-left: 7vw;
+}
+.header{
+    height: 100%;
+    width: 100%;
+    grid-area: top;
+    background-color: var(--secondary-color);
+    box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
+}
+
+.content{
+    display: grid;
+    position: absolute;
+    grid-template-areas: "top top" "login register" "about about";
+    grid-template-rows: 1fr 6fr 1fr;
+    height: 100%;
+    width: 100%;
+    row-gap: 10vh;
+    justify-items: center;
+    
+    
+}
+.login{
+    border: 0 solid var(--secondary-color);
+    border-radius: 1.5vw;
+    overflow: hidden;
+    background-color: var(--background-color);
+
+    padding-left: 1vw;
+    padding-right: 1vw;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    grid-area: login;
+}
+.login-animation{
+    background-color: var(--secondary-color);
+    border-radius: 2vw;
+    box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
+    overflow: hidden;
+
+    top: -1vh;
+    width: 17vw;
+    height: 62vh;
+
+    position: absolute;
+    grid-area: login;
+}
+.login-animation::before{
+    content: "";
+    background-image: conic-gradient(var(--main-color) 20deg, transparent 60deg);
+    height: 100vh;
+    width: 100vh;
+    left: -125%;
+    top: -25%;
+    border-radius: 100%;
+    position: absolute;
+    animation: rotate 2s infinite cubic-bezier(0.43, 0.07, 0.58, 0.9);
+}
+@keyframes rotate{
+    100%{
+        transform: rotate(-360deg);
+    }
+}
+
+.register{
+    border: 0 solid var(--secondary-color);
+    border-radius: 1.5vw;
+    overflow: hidden;
+    background-color: var(--background-color);
+
+    padding-left: 1vw;
+    padding-right: 1vw;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    grid-area: register;
+}
+
+.register-animation::before{
+    content: "";
+    background-image: conic-gradient(var(--main-color) 20deg, transparent 60deg);
+    height: 100vh;
+    width: 100vh;
+    left: -125%;
+    top: -25%;
+    border-radius: 100%;
+    position: absolute;
+    animation: rotate 2s infinite cubic-bezier(0.43, 0.07, 0.58, 0.9);
+}
+.register-animation{
+    background-color: var(--secondary-color);
+    border-radius: 2vw;
+    box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
+    overflow: hidden;
+
+    top: -1vh;
+    width: 17vw;
+    height: 62vh;
+
+    position: absolute;
+    grid-area: register;
+}
+.meter{
+    /*Reset All*/ 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+
+    margin-top: 1.2vh;
+    width: 12vw;
+    height: 0.6vh;
+    margin-left: 1vw;
+    background-color: var(--secondary-color);
+    border-radius: 32px;
+}
+meter[value="1"]::-webkit-meter-optimum-value { background: red; }
+meter[value="2"]::-webkit-meter-optimum-value { background: yellow; }
+meter[value="3"]::-webkit-meter-optimum-value { background: orange; }
+meter[value="4"]::-webkit-meter-optimum-value { background: green; }
+
+
+.input{
+    background-color: #424242;
+    border-radius: 6vw;
+    height: 3.5vh;
+    width: 12vw;
+    font-family: 'Dongle';
+    color: white;
+    font-size: 1.2rem;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    border: none;
+}
+
+.label{
+    color: #6d6d6d;
+    font-size: 1em;
+    margin-bottom: 0.7vh;
+    margin-top: 3vh;
+}
+.register p{
+    text-align: center;
+    font-size: 2.2em;
+    margin: 0;
+}
+.login p{
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 7vh;
+
+}
+.button{
+    margin-top: 2vw;
+    border-radius: 5vw;
+    border: none;
+    font-family: 'Dongle';
+    color: var(--main-color);
+    font-size: 1em;
+    padding-bottom: 2vh;
+    background-color: #424242;
+    height: 4vh;
+    width: 8vw;
+    margin-bottom: 3vh;
+}
+.button:hover{
+    background-color: var(--main-color);
+    color: #424242;
+    transition: background-color 250ms;
+    transition: color 150ms;
+}
+.about{
+    grid-area: about;
+    height: 100%;
+    width: 100%;
+    background-color: var(--secondary-color);
+    box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
+    
+}
