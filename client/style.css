@@ -16,14 +16,24 @@ body{
     overflow: hidden;
 }
 .header-text{
-    margin-left: 7vw;
+    content: '';
 }
 .header{
-    height: 100%;
+    display: flex;
+    align-items: center;
+
     width: 100%;
     grid-area: top;
     background-color: var(--secondary-color);
     box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
+}
+.icon{
+    margin-right: 2vw;
+    margin-left: 2vw;
+    height: 7.5vh;
+    width: 7.5vh;
+    border-radius: 10vh;
+    background-color: var(--main-color);
 }
 
 .content{
@@ -39,44 +49,47 @@ body{
     
 }
 .login{
-    border: 0 solid var(--secondary-color);
-    border-radius: 1.5vw;
-    overflow: hidden;
-    background-color: var(--background-color);
-
-    padding-left: 1vw;
-    padding-right: 1vw;
+    z-index: 1;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    padding-top: 4vh;
+    padding-bottom: 4vw;
 
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     grid-area: login;
-}
-.login-animation{
+
     background-color: var(--secondary-color);
-    border-radius: 2vw;
+    border-radius: 2.5vw;
     box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
     overflow: hidden;
-
-    top: -1vh;
-    width: 17vw;
-    height: 62vh;
-
-    position: absolute;
-    grid-area: login;
+    
 }
-.login-animation::before{
+.login::after{
+    position: absolute;
+    z-index: -1;
+    content: '';
+    background-color: var(--background-color);
+    border-radius: 2vw;
+    width: 95%;
+    height: 96%;
+    top: 2%;
+    left: 2.5%;
+}
+.login::before{
+    z-index: -1;
     content: "";
     background-image: conic-gradient(var(--main-color) 20deg, transparent 60deg);
-    height: 100vh;
-    width: 100vh;
-    left: -125%;
-    top: -25%;
+    height: 200%;
+    width: 200%;
+    left: -50%;
     border-radius: 100%;
     position: absolute;
     animation: rotate 2s infinite cubic-bezier(0.43, 0.07, 0.58, 0.9);
 }
+
 @keyframes rotate{
     100%{
         transform: rotate(-360deg);
@@ -84,44 +97,55 @@ body{
 }
 
 .register{
-    border: 0 solid var(--secondary-color);
-    border-radius: 1.5vw;
+    z-index: 1;
     overflow: hidden;
-    background-color: var(--background-color);
 
-    padding-left: 1vw;
-    padding-right: 1vw;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    padding-top: 4vh;
+    padding-bottom: 4vw;
 
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     grid-area: register;
+
+    background-color: var(--secondary-color);
+    border-radius: 2.5vw;
+    box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
 }
 
-.register-animation::before{
+.register::after{
+    position: absolute;
+    z-index: -1;
+    content: '';
+    background-color: var(--background-color);
+    border-radius: 2vw;
+    width: 95%;
+    height: 96%;
+    top: 2%;
+    left: 2.5%;
+    /*Wenn nichts geladen werden muss
+    ToDo: animation stoppen oder "border" vergrößern
+    
+    width: 102%;
+    height: 102%;
+    top: -1%;
+    left: -1%;
+*/  
+    
+}
+.register::before{
+    z-index: -1;
     content: "";
     background-image: conic-gradient(var(--main-color) 20deg, transparent 60deg);
-    height: 100vh;
-    width: 100vh;
-    left: -125%;
-    top: -25%;
+    height: 200%;
+    width: 200%;
+    left: -50%;
     border-radius: 100%;
     position: absolute;
     animation: rotate 2s infinite cubic-bezier(0.43, 0.07, 0.58, 0.9);
-}
-.register-animation{
-    background-color: var(--secondary-color);
-    border-radius: 2vw;
-    box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
-    overflow: hidden;
-
-    top: -1vh;
-    width: 17vw;
-    height: 62vh;
-
-    position: absolute;
-    grid-area: register;
 }
 .meter{
     /*Reset All*/ 
@@ -131,27 +155,49 @@ body{
     background: none;
     background-color: rgba(0, 0, 0, 0.1);
 
-    margin-top: 1.2vh;
-    width: 12vw;
-    height: 0.6vh;
+    margin-top: 1vh;
     margin-left: 1vw;
+    position: relative;
+    padding: 1%;
+    width: 80%;
+    height: 50px;
     background-color: var(--secondary-color);
-    border-radius: 32px;
+    border-radius: 50px;
 }
-meter[value="1"]::-webkit-meter-optimum-value { background: red; }
-meter[value="2"]::-webkit-meter-optimum-value { background: yellow; }
-meter[value="3"]::-webkit-meter-optimum-value { background: orange; }
-meter[value="4"]::-webkit-meter-optimum-value { background: green; }
+/*Chrome, Safari usw. (Webkit)*/
+meter[value="1"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="2"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="3"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="4"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="5"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="6"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="7"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="8"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="9"]::-webkit-meter-optimum-value { background: var(--main-color) }
+meter[value="10"]::-webkit-meter-optimum-value { background: var(--main-color) }
+
+/*Firefox (Gecko)*/
+meter[value="1"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="2"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="3"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="4"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="5"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="6"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="7"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="8"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="9"]::-moz-meter-bar { background: var(--main-color) }
+meter[value="10"]::-moz-meter-bar { background: var(--main-color) }
+
 
 
 .input{
     background-color: #424242;
     border-radius: 6vw;
-    height: 3.5vh;
-    width: 12vw;
+    height: 7.5%;
+    width: 80%;
     font-family: 'Dongle';
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.2em;
     padding-left: 1vw;
     padding-right: 1vw;
     border: none;
@@ -166,7 +212,7 @@ meter[value="4"]::-webkit-meter-optimum-value { background: green; }
 .register p{
     text-align: center;
     font-size: 2.2em;
-    margin: 0;
+    margin-bottom: 5vh;
 }
 .login p{
     text-align: center;
@@ -181,11 +227,10 @@ meter[value="4"]::-webkit-meter-optimum-value { background: green; }
     font-family: 'Dongle';
     color: var(--main-color);
     font-size: 1em;
-    padding-bottom: 2vh;
+    padding-bottom: 4.75vh;
     background-color: #424242;
-    height: 4vh;
-    width: 8vw;
-    margin-bottom: 3vh;
+    height: 7.5%;
+    width: 50%;
 }
 .button:hover{
     background-color: var(--main-color);
@@ -194,10 +239,10 @@ meter[value="4"]::-webkit-meter-optimum-value { background: green; }
     transition: color 150ms;
 }
 .about{
+    padding: 1%;
     grid-area: about;
-    height: 100%;
-    width: 100%;
+
     background-color: var(--secondary-color);
-    box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
+    box-shadow: 0 -1vh 2vw rgba(0,0,0,0.2);
     
 }

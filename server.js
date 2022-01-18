@@ -4,7 +4,7 @@ const http = require('http')
 const socketio = require('socket.io');
 const crypto = require('crypto')
 const console = require('console');
-const PORT = process.env.PORT || 8080; //Für Heroku
+const PORT = process.env.PORT || 8080; //Für Heroku ?!Hosting Webside?!
 
 const app = express()
 const server = http.createServer(app)
@@ -32,6 +32,7 @@ io.on('connection', socket => {
     socket.on('getSalt', data => {
         socket.emit('salt', salt);
 
+        //ToDo .then(){}
         socket.on('login', data => {
             console.log("   User versucht einzuloggen")
             console.log("   Password&Salt(Hash): " + password)
