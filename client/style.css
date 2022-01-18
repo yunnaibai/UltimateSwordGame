@@ -47,6 +47,7 @@ body{
     justify-items: center;
 
     --gradient-main-color: #ff5e4100;
+    --gradient-second-color: #ffffff00;
     --div-width: 102%;
     --div-height: 102%;
     --div-top: -1%;
@@ -133,25 +134,12 @@ body{
     height: var(--div-height);
     top: var(--div-top);
     left: var(--div-left);
-    /*Wenn nichts geladen werden muss
-    ToDo: animation stoppen oder "border" vergrößern
-    
-    width: 102%;
-    height: 102%;
-    top: -1%;
-    left: -1%;
-
-    width: 95%;
-    height: 96%;
-    top: 2%;
-    left: 2.5%;
-*/  
     
 }
 .register::before{
     z-index: -1;
     content: "";
-    background-image: conic-gradient(var(--gradient-main-color) 20deg, transparent 60deg);
+    background-image: conic-gradient(var(--gradient-main-color) 20deg, var(--gradient-second-color) 60deg);
     height: 200%;
     width: 200%;
     left: -50%;
