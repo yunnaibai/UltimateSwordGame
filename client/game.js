@@ -24,6 +24,7 @@ const login = () => {
             console.log("CSS verändern")
             document.getElementById("content").style.setProperty("--gradient-main-color", "#ff5e41");
             //document.getElementById("content").style.setProperty("--gradient-second-color", "#ffff00");
+            //ToDo setInterval() und seTimeout()
             document.getElementById("content").style.setProperty("--div-width", "95%");
             document.getElementById("content").style.setProperty("--div-height", "96%");
             document.getElementById("content").style.setProperty("--div-top", "2%");
