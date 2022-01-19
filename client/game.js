@@ -10,16 +10,24 @@ let registerPasswordAgain = document.getElementById("pass2")
 const login = () => {
     socket.emit("getSalt", hash(loginUsername.value))
     socket.on("salt", (salt) => {
-        if(salt !== "404"){
+        if(salt !== false){
             console.log("Salt: " + salt)
             var login = {
                 pass: hash(loginPassword.value + salt),
-                user: loginUsername.value
+                user: hash(loginUsername.value)
             }
             socket.emit("login",login)
-            displayCorrect();
         }else{
             displayError();
+        }
+    })
+    socket.on('succesfullLogin', (para) =>{
+        console.log(para)
+        if(para){
+            displayCorrect()
+            //location.href = "./game.html";
+        }else{
+            displayError()
         }
     })
     
@@ -37,7 +45,12 @@ const register = () => {
             }
 
             socket.emit("register", register)
-            displayCorrect();
+            socket.on("succesfullRegister", (para) => {
+                if(para == true){
+                    displayCorrect();
+                }
+            })
+            
         })
             
     }else{
@@ -49,7 +62,6 @@ const register = () => {
 const hash = input => CryptoJS.SHA512(input).toString()
 
 const displayError = () => {
-    console.log("Error css")
     displayMoveDiv();
     document.getElementById("content").style.setProperty("--gradient-main-color", "#E50030");
     document.getElementById("content").style.setProperty("--gradient-second-color", "#E50030");
@@ -58,7 +70,6 @@ const displayError = () => {
     }, 500)
 }
 const displayCorrect = () => {
-    console.log("Error css")
     displayMoveDiv();
     document.getElementById("content").style.setProperty("--gradient-main-color", "#54af48");
     document.getElementById("content").style.setProperty("--gradient-second-color", "#54af48");

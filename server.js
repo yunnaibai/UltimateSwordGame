@@ -28,16 +28,33 @@ io.on('connection', socket => {
     socket.emit('welcome', "Verbindung zum Server wurde hergestellt!")
 
     //==================================================Login==================================================
-    socket.on('getSalt', data => {
-        socket.emit('salt', "404");
+    socket.on('getSalt', user => {
+        parseJSON("./data.json", (data) => {
 
-        //ToDo .then(){}
-        socket.on('login', data => {
-            console.log("   User versucht einzuloggen")
-            console.log("   Password&Salt(Hash): " + password)
-            console.log("   Username(Hash): " + username)
-            if(data.user == username && data.pass == password){
-                console.log("Eingelogt!")
+            const salt = () => {
+                for(let e of data.userdata){ //ToDo gucken das passwort und username auf den gleichen Salt zutreffen
+                    if(e.name === user){
+                        return e.salt;
+                    }
+                }
+                return false
+            }
+            socket.emit('salt', salt());
+
+            if(salt() != false){
+                socket.on('login', loginData => {
+                    //console.log(loginData)
+                    for(let e of data.userdata){
+                        if(e.name === loginData.user){
+                            if(loginData.user === e.name && loginData.pass === e.password){
+                                console.log("Eingelogt als " + e.name)
+                                socket.emit('succesfullLogin', true)
+                            }else{
+                                socket.emit('succesfullLogin', false)
+                            }
+                        }
+                    }
+                })
             }
         })
     })
@@ -54,9 +71,10 @@ io.on('connection', socket => {
             console.log("   Passwort: " + data.pass);
 
             parseJSON('./data.json', (json) => {
-                json['user-data'].push({"name":data.user,"salt":salt,"password":data.pass})
+                json['userdata'].push({"name":data.user,"salt":salt,"password":data.pass})
                 //console.log(json)
                 writeJSON('./data.json', json)
+                socket.emit('succesfullRegister', true)
             })
 
         })
@@ -92,5 +110,7 @@ const writeJSON = (path, data) =>{
         }
     })
 }
+
+
 
 
