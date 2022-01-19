@@ -239,8 +239,13 @@ meter[value="10"]::-moz-meter-bar { background: var(--main-color) }
     transition: background-color 250ms;
     transition: color 150ms;
 }
+.nope{
+    color: var(--main-color);
+    line-height: 0;
+    text-decoration-thickness: 0.2vh;
+}
 .about{
-    padding: 1%;
+    padding: 1.5%;
     grid-area: about;
     text-align: center;
 

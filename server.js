@@ -27,6 +27,7 @@ io.on('connection', socket => {
     console.log(`Client ${socket.id} ist zum Server connected`)
     socket.emit('welcome', "Verbindung zum Server wurde hergestellt!")
 
+    //==================================================Login==================================================
     socket.on('getSalt', data => {
         socket.emit('salt', "404");
 
