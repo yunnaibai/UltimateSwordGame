@@ -32,8 +32,8 @@ io.on('connection', socket => {
         parseJSON("./data.json", (data) => {
 
             const salt = () => {
-                for(let e of data.userdata){ //ToDo gucken das passwort und username auf den gleichen Salt zutreffen
-                    if(e.name === user){
+                for(let e of data.userdata){ //ToDo: - Gucken das passwort und username auf den gleichen Salt zutreffen
+                    if(e.name === user){     //      - Alle Listener verketten (nicht ineinander vllt. mit then() und Promises)
                         return e.salt;
                     }
                 }
