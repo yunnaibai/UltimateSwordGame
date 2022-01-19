@@ -5,54 +5,95 @@ let loginPassword = document.getElementById("pass")
 let registerUsername = document.getElementById("user1")
 let registerPassword = document.getElementById("pass1")
 let registerPasswordAgain = document.getElementById("pass2")
-let salt;
-let username;
-let password;
+
 
 const login = () => {
-    username = hash(loginUsername.value)
-    socket.emit("getSalt", username)
+    socket.emit("getSalt", hash(loginUsername.value))
     socket.on("salt", (salt) => {
         if(salt !== "404"){
             console.log("Salt: " + salt)
             var login = {
-                pass: hash(loginPassword + salt),
-                user: username
+                pass: hash(loginPassword.value + salt),
+                user: loginUsername.value
             }
             socket.emit("login",login)
+            displayCorrect();
         }else{
-            console.log("CSS verändern")
-            document.getElementById("content").style.setProperty("--gradient-main-color", "#ff5e41");
-            //document.getElementById("content").style.setProperty("--gradient-second-color", "#ffff00");
-            //ToDo setInterval() und seTimeout()
-            document.getElementById("content").style.setProperty("--div-width", "95%");
-            document.getElementById("content").style.setProperty("--div-height", "96%");
-            document.getElementById("content").style.setProperty("--div-top", "2%");
-            document.getElementById("content").style.setProperty("--div-left", "2.5%");
+            displayError();
         }
     })
     
 
 }
 const register = () => {
-    console.log(registerUsername.value, registerPassword.value, registerPasswordAgain.value)
-    username = hash(loginUsername.value)
-    if(registerPassword.value === registerPasswordAgain.value){
-        console.log("Passwörter sind gleich")
-        socket.emit("generateSalt", username)
-        console.log("Salt wurde angefragt")
-        socket.on("firstSalt", (salt) => {
-            console.log("Salt: " + salt)
+    if(registerPassword.value === registerPasswordAgain.value && registerUsername.value !== "" && registerPassword.value !== "" && registerPasswordAgain.value !== ""){
+        socket.emit("generateSalt", hash(registerUsername.value))
+
+        socket.on("salt", (salt) => {
+            
             var register = {
-                pass: hash(loginPassword + salt),
-                user: username
+                pass: hash(registerPassword.value + salt),
+                user: hash(registerUsername.value)
             }
-            console.log("Password&salt(Hash): " + register.pass)
+
             socket.emit("register", register)
+            displayCorrect();
         })
             
-    }  
+    }else{
+        displayError();
+    }
         
 }
 
 const hash = input => CryptoJS.SHA512(input).toString()
+
+const displayError = () => {
+    console.log("Error css")
+    displayMoveDiv();
+    document.getElementById("content").style.setProperty("--gradient-main-color", "#E50030");
+    document.getElementById("content").style.setProperty("--gradient-second-color", "#E50030");
+    setTimeout(() => {
+        displaySetDefault()
+    }, 500)
+}
+const displayCorrect = () => {
+    console.log("Error css")
+    displayMoveDiv();
+    document.getElementById("content").style.setProperty("--gradient-main-color", "#54af48");
+    document.getElementById("content").style.setProperty("--gradient-second-color", "#54af48");
+    setTimeout(() => {
+        displaySetDefault()
+    }, 500)
+}
+const displaySetDefault = () =>{
+    document.getElementById("content").style.setProperty("--gradient-main-color", "#ff5e4100");
+    document.getElementById("content").style.setProperty("--gradient-second-color", "#ff5e4100");
+    document.getElementById("content").style.setProperty("--div-width", "104%");
+    document.getElementById("content").style.setProperty("--div-height", "104%");
+    document.getElementById("content").style.setProperty("--div-top", "-2%");
+    document.getElementById("content").style.setProperty("--div-left", "-2%");
+}
+const displayMoveDiv = () => {
+    let divWidth = 95.0;
+    let divHeight = 96.0;
+    let divTop = 2.0;
+    let divLeft = 2.5;
+
+    
+    let i = 0;
+    let j = setInterval(() => {
+        divWidth+=0.4;
+        divHeight+=0.4;
+        divTop-=0.2;
+        divLeft-=0.2;
+        document.getElementById("content").style.setProperty("--div-width", `${divWidth}%`);
+        document.getElementById("content").style.setProperty("--div-height", `${divHeight}%`);
+        document.getElementById("content").style.setProperty("--div-top", `${divTop}%`);
+        document.getElementById("content").style.setProperty("--div-left", `${divLeft}%`);
+        i++;
+        if(i > 15){
+            clearInterval(j)
+        }
+    }, 40)
+}

@@ -1,19 +1,15 @@
 const express = require('express')
 const path = require('path')
 const http = require('http')
-const socketio = require('socket.io');
+const socketio = require('socket.io')
 const crypto = require('crypto')
-const console = require('console');
-const PORT = process.env.PORT || 8080; //Für Heroku ?!Hosting Webside?!
+const fs = require('fs')
 
+const PORT = process.env.PORT || 8080 //Für Heroku ?!Hosting Webside?!
+//const users = require("./data.json")
 const app = express()
 const server = http.createServer(app)
 const io = socketio(server);
-
-//Databse xD
-var password;
-var username;
-var salt;
 
 
 app.use(express.static(path.join(__dirname, 'client')))
@@ -22,6 +18,8 @@ app.use(express.static(path.join(__dirname, 'client')))
 //Start Server
 server.listen(PORT, () => {
     console.log(`Hört dem Port ${PORT} zu!`)
+    
+    
 })
 
 //Socket Client Request annehmen
@@ -42,16 +40,24 @@ io.on('connection', socket => {
             }
         })
     })
-    socket.on('generateSalt', user => {
-        salt = crypto.randomBytes(16).toString('hex')
-        username = user
-        console.log("Username(Hash): " + username)
-        //Name und Salt in Datenbank eintragen
-        socket.emit('firstSalt', salt);
-        console.log("Salt: " + salt)
+    //==================================================Registrien==================================================
+    socket.on("generateSalt", user => {
+        //wenn der user noch nicht eingetragen wurde
+        var salt = crypto.randomBytes(16).toString('hex');
+        socket.emit('salt', salt);
+
+        console.log("   Username: " + user)
+        console.log("   Salt: " + salt)
+
         socket.on('register', data => {
-            password = data.pass 
-            console.log("Password&Salt(Hash): " + data.pass)
+            console.log("   Passwort: " + data.pass);
+
+            parseJSON('./data.json', (json) => {
+                json['user-data'].push({"name":data.user,"salt":salt,"password":data.pass})
+                //console.log(json)
+                writeJSON('./data.json', json)
+            })
+
         })
     })
 
@@ -60,5 +66,30 @@ io.on('connection', socket => {
       })
 })
 
+
+const parseJSON = (path, callback) => {
+    fs.readFile(path, 'utf-8', (err, data) => {
+        if(err){
+            console.log(err)
+            return null
+            
+        }else{
+            try{
+                const jsonData = JSON.parse(data)
+                return callback(jsonData)
+            }catch(err){
+                console.log(err)
+                return null
+            }
+        }
+    })
+}
+const writeJSON = (path, data) =>{
+    fs.writeFile(path, JSON.stringify(data, null, 2), (err) =>{
+        if(err){
+            console.log(err);
+        }
+    })
+}
 
 
