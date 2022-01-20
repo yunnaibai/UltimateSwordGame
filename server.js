@@ -24,7 +24,7 @@ server.listen(PORT, () => {
 
 //Socket Client Request annehmen
 io.on('connection', socket => {
-    console.log(`Client ${socket.id} ist zum Server connected`)
+    console.log(`[Server] Client ${socket.id} ist zum Server connected`)
     socket.emit('welcome', "Verbindung zum Server wurde hergestellt!")
 
     //==================================================Login==================================================
@@ -32,52 +32,76 @@ io.on('connection', socket => {
         parseJSON("./data.json", (data) => {
 
             const salt = () => {
-                for(let e of data.userdata){ //ToDo: - Gucken das passwort und username auf den gleichen Salt zutreffen
-                    if(e.name === user){     //      - Alle Listener verketten (nicht ineinander vllt. mit then() und Promises)
+                for(let e of data.userdata){ //ToDo: - Login machne dies das
+                    if(e.name === user){
                         return e.salt;
                     }
                 }
                 return false
             }
-            socket.emit('salt', salt());
-
-            if(salt() != false){
-                socket.on('login', loginData => {
-                    //console.log(loginData)
-                    for(let e of data.userdata){
-                        if(e.name === loginData.user){
-                            if(loginData.user === e.name && loginData.pass === e.password){
-                                console.log("Eingelogt als " + e.name)
-                                socket.emit('succesfullLogin', true)
-                            }else{
-                                socket.emit('succesfullLogin', false)
-                            }
-                        }
+            socket.emit('salt', salt())
+            
+        })
+    })
+    socket.on('login', loginData => {
+        parseJSON("./data.json", (data) => {
+            for(let e of data.userdata){
+                if(e.name === loginData.user){
+                    if(loginData.user === e.name && loginData.pass === e.password){
+                        console.log("Eingelogt als " + e.name)
+                        socket.emit('succesfullLogin', true)
+                    }else{
+                        socket.emit('succesfullLogin', false)
                     }
-                })
+                }
             }
         })
     })
     //==================================================Registrien==================================================
     socket.on("generateSalt", user => {
         //wenn der user noch nicht eingetragen wurde
-        var salt = crypto.randomBytes(16).toString('hex');
-        socket.emit('salt', salt);
+        parseJSON('./data.json', (json) => {
+            const searchJSONonDups = () => {
+                for(let e of json.userdata){
+                    if(e.name === user){
+                        return false
+                    }
+                }
+                return true
+            }
 
-        console.log("   Username: " + user)
-        console.log("   Salt: " + salt)
-
-        socket.on('register', data => {
-            console.log("   Passwort: " + data.pass);
-
-            parseJSON('./data.json', (json) => {
-                json['userdata'].push({"name":data.user,"salt":salt,"password":data.pass})
-                //console.log(json)
-                writeJSON('./data.json', json)
-                socket.emit('succesfullRegister', true)
-            })
-
+            if(searchJSONonDups() == true){
+                var salt = crypto.randomBytes(16).toString('hex');
+                socket.emit('salt', salt);
+            }else{
+                console.log("[Register] Username vergeben!")
+                socket.emit('salt', false);
+            }
         })
+        
+        
+    })
+    socket.on('register', data => {
+        parseJSON('./data.json', (json) => {
+            const searchJSONonDups = () => {
+                for(let e of json.userdata){
+                    if(e.name === data.user){
+                        return false
+                    }
+                }
+                return true
+            }
+            if(searchJSONonDups() === true){
+                json['userdata'].push({"name":data.user,"salt":data.salt,"password":data.pass})
+                writeJSON("data.json", json)
+                socket.emit("succesfullRegister", true)
+                console.log(`[Register] User: ${data.user} hinzugefügt`)
+            }else{
+                socket.emit("succesfullRegister", false)
+            }
+            
+        })
+
     })
 
     socket.on("disconnect", () => {

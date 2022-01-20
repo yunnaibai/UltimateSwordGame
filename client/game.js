@@ -6,58 +6,61 @@ let registerUsername = document.getElementById("user1")
 let registerPassword = document.getElementById("pass1")
 let registerPasswordAgain = document.getElementById("pass2")
 
-
+//==================================================Login==================================================
 const login = () => {
     socket.emit("getSalt", hash(loginUsername.value))
-    socket.on("salt", (salt) => {
-        if(salt !== false){
-            console.log("Salt: " + salt)
-            var login = {
-                pass: hash(loginPassword.value + salt),
-                user: hash(loginUsername.value)
-            }
-            socket.emit("login",login)
-        }else{
-            displayError();
-        }
-    })
-    socket.on('succesfullLogin', (para) =>{
-        console.log(para)
-        if(para){
-            displayCorrect()
-            //location.href = "./game.html";
-        }else{
-            displayError()
-        }
-    })
-    
-
 }
-const register = () => {
-    if(registerPassword.value === registerPasswordAgain.value && registerUsername.value !== "" && registerPassword.value !== "" && registerPasswordAgain.value !== ""){
-        socket.emit("generateSalt", hash(registerUsername.value))
-
-        socket.on("salt", (salt) => {
-            
-            var register = {
-                pass: hash(registerPassword.value + salt),
-                user: hash(registerUsername.value)
-            }
-
-            socket.emit("register", register)
-            socket.on("succesfullRegister", (para) => {
-                if(para == true){
-                    displayCorrect();
-                }
-            })
-            
-        })
-            
+socket.on("salt", (salt) => {
+    if(salt !== false){
+        console.log("Salt: " + salt)
+        var login = {
+            pass: hash(loginPassword.value + salt),
+            user: hash(loginUsername.value)
+        }
+        socket.emit("login",login)
     }else{
         displayError();
     }
-        
+})
+socket.on('succesfullLogin', (para) =>{
+    console.log(para)
+    if(para){
+        displayCorrect()
+        //location.href = "./game.html";
+    }else{
+        displayError()
+    }
+})
+//==================================================Registrien==================================================
+const register = () => {
+    if(registerPassword.value === registerPasswordAgain.value && registerUsername.value !== "" && registerPassword.value !== "" && registerPasswordAgain.value !== ""){
+        socket.emit("generateSalt", hash(registerUsername.value))
+    }else{
+        displayError();
+    }
 }
+socket.on("salt", (salt) => {
+        
+    var register = {
+        pass: hash(registerPassword.value + salt),
+        user: hash(registerUsername.value),
+        salt: salt
+    }
+    if(salt !== false){
+    socket.emit("register", register)
+    console.log("User noch nicht existent")
+    }else{
+        console.log("Salt ist false")
+        displayError();
+    }
+})
+socket.on("succesfullRegister", (para) => {
+    if(para == true){
+        displayCorrect();
+    }else{
+        displayError();
+    }
+})  
 
 const hash = input => CryptoJS.SHA512(input).toString()
 
