@@ -12,7 +12,6 @@ const login = () => {
 }
 socket.on("salt", (salt) => {
     if(salt !== false){
-        console.log("Salt: " + salt)
         var login = {
             pass: hash(loginPassword.value + salt),
             user: hash(loginUsername.value)
@@ -23,7 +22,6 @@ socket.on("salt", (salt) => {
     }
 })
 socket.on('succesfullLogin', (para) =>{
-    console.log(para)
     if(para){
         displayCorrect()
         //location.href = "./game.html";
@@ -39,7 +37,7 @@ const register = () => {
         displayError();
     }
 }
-socket.on("salt", (salt) => {
+socket.on("firstSalt", (salt) => {
         
     var register = {
         pass: hash(registerPassword.value + salt),
@@ -50,7 +48,6 @@ socket.on("salt", (salt) => {
     socket.emit("register", register)
     console.log("User noch nicht existent")
     }else{
-        console.log("Salt ist false")
         displayError();
     }
 })

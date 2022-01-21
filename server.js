@@ -32,7 +32,7 @@ io.on('connection', socket => {
         parseJSON("./data.json", (data) => {
 
             const salt = () => {
-                for(let e of data.userdata){ //ToDo: - Login machne dies das
+                for(let e of data.userdata){
                     if(e.name === user){
                         return e.salt;
                     }
@@ -57,9 +57,8 @@ io.on('connection', socket => {
             }
         })
     })
-    //==================================================Registrien==================================================
+    //==================================================Registriren==================================================
     socket.on("generateSalt", user => {
-        //wenn der user noch nicht eingetragen wurde
         parseJSON('./data.json', (json) => {
             const searchJSONonDups = () => {
                 for(let e of json.userdata){
@@ -72,10 +71,10 @@ io.on('connection', socket => {
 
             if(searchJSONonDups() == true){
                 var salt = crypto.randomBytes(16).toString('hex');
-                socket.emit('salt', salt);
+                socket.emit('firstSalt', salt);
             }else{
                 console.log("[Register] Username vergeben!")
-                socket.emit('salt', false);
+                socket.emit('firstSalt', false);
             }
         })
         
