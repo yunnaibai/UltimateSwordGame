@@ -14,7 +14,7 @@
  - [ ] Pepper an das gehashte Passwort auf dem Server anhängen für mehr Sicherheit :)
  - [ ] Timing Attacks mit Crypto verhindern
  - [ ] Anderes Hash-Verfahren benutzten um gnereierung von diesen zu entschleunigen
- - [ ] Auf API Zugriff zurückgreifen statt Socket.io (z.B Rest)
+ - [ ] Auf API Zugriff zurückgreifen statt Socket.io (z.B Rest, Express)
  - [ ] Code Refactoring :(
  - [ ] Datenbank benutzen statt nur einer json Datei (MongoDB? Overengineering?)
 
