@@ -75,8 +75,6 @@ const register = () => {
     if(blocked == false){
         if(registerPassword.value === registerPasswordAgain.value && registerUsername.value !== "" && registerPassword.value !== "" && registerPasswordAgain.value !== ""){
             socket.emit("generateSalt", hash(registerUsername.value))
-        }else{
-            displayError();
         }
     }
 }
@@ -115,7 +113,7 @@ const displayError = () => {
             displaySetDefault()
         }, 500)
         blocked = false
-    }, 1700)
+    }, 2000)
     
 }
 const displayCorrect = () => {
@@ -129,7 +127,7 @@ const displayCorrect = () => {
             displaySetDefault()
         }, 500)
         blocked = false
-    }, 1700)
+    }, 2000)
     
 }
 const displaySetDefault = () =>{

@@ -211,7 +211,7 @@ meter[value="10"]::-moz-meter-bar { background: var(--main-color) }
 .register p{
     text-align: center;
     font-size: 2.2em;
-    margin-bottom: 4vh;
+    margin-bottom: 2.5vh;
     margin-top: 10vh;
 }
 .login p{
@@ -221,8 +221,8 @@ meter[value="10"]::-moz-meter-bar { background: var(--main-color) }
 
 }
 .button{
-    margin-top: 3vh;
-    margin-bottom: 5vh;
+    margin-top: 10%;
+    margin-bottom: 17%;
     border-radius: 5vw;
     border: none;
     font-family: 'Dongle';
