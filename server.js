@@ -6,20 +6,15 @@ const crypto = require('crypto')
 const fs = require('fs')
 
 const PORT = process.env.PORT || 8080 //Für Heroku ?!Hosting Webside?!
-//const users = require("./data.json")
 const app = express()
 const server = http.createServer(app)
 const io = socketio(server);
 
-
 app.use(express.static(path.join(__dirname, 'client')))
-//console.log(path.join(__dirname, '..', 'client'));
 
 //Start Server
 server.listen(PORT, () => {
     console.log(`Hört dem Port ${PORT} zu!`)
-    
-    
 })
 
 //Socket Client Request annehmen
