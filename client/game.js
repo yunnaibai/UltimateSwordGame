@@ -8,13 +8,37 @@ const registerUsername = document.getElementById("user1")
 const registerPassword = document.getElementById("pass1")
 const registerPasswordAgain = document.getElementById("pass2")
 
-const mainColor = "#ff5e80"
+let mainColor = "#ff5e80"
 const correctColor = "#54af48"
 const errorColor = "#E50030"
 const transparentColor = "#00000000"
 
 let blocked = false;
 
+
+
+const randomMainColor = async () => {
+    let rnd = Math.floor(Math.random() * 5)
+    switch(rnd.toString()){
+        case "0":
+            mainColor = "#ff5e80"
+        break
+        case "1":
+            mainColor = "#D91E34"
+        break
+        case "2":
+            mainColor = "#7BB570"
+        break
+        case "3":
+            mainColor = "#7E22F0"
+        break
+        case "4":
+            mainColor = "#23A6DE"
+        break
+    }
+}
+
+randomMainColor()
 document.documentElement.style.setProperty('--main-color', mainColor);
 
 
@@ -142,8 +166,9 @@ const displayMoveDiv = () => {
 const displayFakeLoading = () => {
     content.style.setProperty("--gradient-main-color", mainColor);
     content.style.setProperty("--gradient-second-color", transparentColor);
-    content.style.setProperty("--div-width", "94%");
-    content.style.setProperty("--div-height", "95%");
-    content.style.setProperty("--div-top", "2.5%");
-    content.style.setProperty("--div-left", "3%");
+    content.style.setProperty("--div-width", "95%");
+    content.style.setProperty("--div-height", "96%");
+    content.style.setProperty("--div-top", "2%");
+    content.style.setProperty("--div-left", "2.5%");
 }
+
