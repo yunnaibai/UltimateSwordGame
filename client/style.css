@@ -1,7 +1,7 @@
 
 
 :root{
-    --main-color: #ff5e41;
+    --main-color: #ffffff;
     --background-color: #303030;
     --secondary-color: #212121;
 }
@@ -68,7 +68,7 @@ body{
     justify-content: center;
     grid-area: login;
 
-    background-color: var(--secondary-color);
+    background-color: var(--background-color);
     border-radius: 10%;
     box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
     overflow: hidden;
@@ -118,7 +118,7 @@ body{
     flex-direction: column;
     justify-content: center;
     grid-area: register;
-    background-color: var(--secondary-color);
+    background-color: var(--background-color);
     border-radius: 10%;
     box-shadow: 0 1vh 2vw rgba(0,0,0,0.3);
 }

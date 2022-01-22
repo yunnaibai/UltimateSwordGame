@@ -1,14 +1,31 @@
 const socket = io()
 
-let loginUsername = document.getElementById("user")
-let loginPassword = document.getElementById("pass")
-let registerUsername = document.getElementById("user1")
-let registerPassword = document.getElementById("pass1")
-let registerPasswordAgain = document.getElementById("pass2")
+
+const content = document.getElementById("content")
+const loginUsername = document.getElementById("user")
+const loginPassword = document.getElementById("pass")
+const registerUsername = document.getElementById("user1")
+const registerPassword = document.getElementById("pass1")
+const registerPasswordAgain = document.getElementById("pass2")
+
+const mainColor = "#ff5e80"
+const correctColor = "#54af48"
+const errorColor = "#E50030"
+const transparentColor = "#00000000"
+
+let blocked = false;
+
+document.documentElement.style.setProperty('--main-color', mainColor);
+
+
 
 //==================================================Login==================================================
 const login = () => {
-    socket.emit("getSalt", hash(loginUsername.value))
+    if(blocked == false){
+        if(loginUsername.value !== "" && loginPassword.value !== ""){
+            socket.emit("getSalt", hash(loginUsername.value))
+        }
+    }
 }
 socket.on("salt", (salt) => {
     if(salt !== false){
@@ -31,10 +48,12 @@ socket.on('succesfullLogin', (para) =>{
 })
 //==================================================Registrien==================================================
 const register = () => {
-    if(registerPassword.value === registerPasswordAgain.value && registerUsername.value !== "" && registerPassword.value !== "" && registerPasswordAgain.value !== ""){
-        socket.emit("generateSalt", hash(registerUsername.value))
-    }else{
-        displayError();
+    if(blocked == false){
+        if(registerPassword.value === registerPasswordAgain.value && registerUsername.value !== "" && registerPassword.value !== "" && registerPasswordAgain.value !== ""){
+            socket.emit("generateSalt", hash(registerUsername.value))
+        }else{
+            displayError();
+        }
     }
 }
 socket.on("firstSalt", (salt) => {
@@ -62,28 +81,40 @@ socket.on("succesfullRegister", (para) => {
 const hash = input => CryptoJS.SHA512(input).toString()
 
 const displayError = () => {
-    displayMoveDiv();
-    document.getElementById("content").style.setProperty("--gradient-main-color", "#E50030");
-    document.getElementById("content").style.setProperty("--gradient-second-color", "#E50030");
+    blocked = true
+    displayFakeLoading()
     setTimeout(() => {
-        displaySetDefault()
-    }, 500)
+        displayMoveDiv();
+        content.style.setProperty("--gradient-main-color", errorColor);
+        content.style.setProperty("--gradient-second-color", errorColor);
+        setTimeout(() => {
+            displaySetDefault()
+        }, 500)
+        blocked = false
+    }, 1700)
+    
 }
 const displayCorrect = () => {
-    displayMoveDiv();
-    document.getElementById("content").style.setProperty("--gradient-main-color", "#54af48");
-    document.getElementById("content").style.setProperty("--gradient-second-color", "#54af48");
+    blocked = true
+    displayFakeLoading()
     setTimeout(() => {
-        displaySetDefault()
-    }, 500)
+        displayMoveDiv();
+        content.style.setProperty("--gradient-main-color", correctColor);
+        content.style.setProperty("--gradient-second-color", correctColor);
+        setTimeout(() => {
+            displaySetDefault()
+        }, 500)
+        blocked = false
+    }, 1700)
+    
 }
 const displaySetDefault = () =>{
-    document.getElementById("content").style.setProperty("--gradient-main-color", "#ff5e4100");
-    document.getElementById("content").style.setProperty("--gradient-second-color", "#ff5e4100");
-    document.getElementById("content").style.setProperty("--div-width", "104%");
-    document.getElementById("content").style.setProperty("--div-height", "104%");
-    document.getElementById("content").style.setProperty("--div-top", "-2%");
-    document.getElementById("content").style.setProperty("--div-left", "-2%");
+    content.style.setProperty("--gradient-main-color", transparentColor);
+    content.style.setProperty("--gradient-second-color", transparentColor);
+    content.style.setProperty("--div-width", "104%");
+    content.style.setProperty("--div-height", "104%");
+    content.style.setProperty("--div-top", "-2%");
+    content.style.setProperty("--div-left", "-2%");
 }
 const displayMoveDiv = () => {
     let divWidth = 95.0;
@@ -98,13 +129,21 @@ const displayMoveDiv = () => {
         divHeight+=0.4;
         divTop-=0.2;
         divLeft-=0.2;
-        document.getElementById("content").style.setProperty("--div-width", `${divWidth}%`);
-        document.getElementById("content").style.setProperty("--div-height", `${divHeight}%`);
-        document.getElementById("content").style.setProperty("--div-top", `${divTop}%`);
-        document.getElementById("content").style.setProperty("--div-left", `${divLeft}%`);
+        content.style.setProperty("--div-width", `${divWidth}%`);
+        content.style.setProperty("--div-height", `${divHeight}%`);
+        content.style.setProperty("--div-top", `${divTop}%`);
+        content.style.setProperty("--div-left", `${divLeft}%`);
         i++;
         if(i > 15){
             clearInterval(j)
         }
     }, 40)
+}
+const displayFakeLoading = () => {
+    content.style.setProperty("--gradient-main-color", mainColor);
+    content.style.setProperty("--gradient-second-color", transparentColor);
+    content.style.setProperty("--div-width", "94%");
+    content.style.setProperty("--div-height", "95%");
+    content.style.setProperty("--div-top", "2.5%");
+    content.style.setProperty("--div-left", "3%");
 }
