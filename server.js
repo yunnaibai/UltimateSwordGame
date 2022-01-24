@@ -4,6 +4,8 @@ const http = require('http')
 const socketio = require('socket.io')
 const crypto = require('crypto')
 const fs = require('fs')
+const console = require('console')
+const userRoutes = require('./routes/userdata')
 
 const PORT = process.env.PORT || 8080 //Für Heroku ?!Hosting Webside?!
 const app = express()
@@ -17,11 +19,17 @@ server.listen(PORT, () => {
     console.log(`Hört dem Port ${PORT} zu!`)
 })
 
+//MIDDLEWARE
+app.use('/', userRoutes)
+//ROUTES
+//console.log(app)
+
+
 //Socket Client Request annehmen
+/*
 io.on('connection', socket => {
     console.log(`[Server] Client ${socket.id} ist zum Server connected`)
     socket.emit('welcome', "Verbindung zum Server wurde hergestellt!")
-
     //==================================================Login==================================================
     socket.on('getSalt', user => {
         parseJSON("./data.json", (data) => {
@@ -97,12 +105,11 @@ io.on('connection', socket => {
         })
 
     })
-
     socket.on("disconnect", () => {
         console.log(`${socket.id} ist disconnected`) 
       })
 })
-
+*/
 
 const parseJSON = (path, callback) => {
     fs.readFile(path, 'utf-8', (err, data) => {

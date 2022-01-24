@@ -13,11 +13,11 @@ const correctColor = "#54af48"
 const errorColor = "#E50030"
 const transparentColor = "#00000000"
 
-let blocked = false;
+let blocked = false
 
 
 
-const randomMainColor = async () => {
+const randomMainColor = () => {
     let rnd = Math.floor(Math.random() * 5)
     switch(rnd.toString()){
         case "0":
