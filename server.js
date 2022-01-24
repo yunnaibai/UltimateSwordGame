@@ -20,6 +20,7 @@ server.listen(PORT, () => {
 })
 
 //MIDDLEWARE
+app.use(express.json())
 app.use('/', userRoutes)
 //ROUTES
 //console.log(app)

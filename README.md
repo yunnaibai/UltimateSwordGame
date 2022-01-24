@@ -15,6 +15,7 @@
  - [ ] Timing Attacks mit Crypto verhindern (if abfragen durch eine copare funktion ersetzten)
  - [ ] Anderes Hash-Verfahren benutzten um generierung von diesen zu entschleunigen
  - [ ] Auf API Zugriff zurückgreifen statt Socket.io (z.B Rest, Express)
+   - [x] wird grad gelernt... 
  - [ ] Code Refactoring :(
  - [ ] Datenbank benutzen statt nur einer json Datei (MongoDB? Overengineering?)
 
@@ -31,7 +32,6 @@
  - [ ] Phaser selbst lernen :/
  - [ ] Jonas **beibringen** Phaser **zu lernen**
  - [ ] Code kommentieren
- - [ ] Rest API lernen
  - [ ] Strukturierung von JavaScript-Projekten lernen
 
 
