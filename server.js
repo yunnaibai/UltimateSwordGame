@@ -5,7 +5,6 @@ const socketio = require('socket.io')
 const crypto = require('crypto')
 const fs = require('fs')
 const console = require('console')
-const userRoutes = require('./routes/userdata')
 
 const PORT = process.env.PORT || 8080 //Für Heroku ?!Hosting Webside?!
 const app = express()
@@ -21,9 +20,32 @@ server.listen(PORT, () => {
 
 //MIDDLEWARE
 app.use(express.json())
-app.use('/', userRoutes)
+
+
 //ROUTES
-//console.log(app)
+app.get('/salt', (req, res) => {
+    console.log("someone searchin for the white crystals...")
+    parseJSON("./data.json", (data) => {
+
+        const salt = () => {
+            for(let e of data.userdata){
+                if(e.name === req.body.user){
+                    return e.salt;
+                }
+            }
+            return false
+        }
+        res.send(salt())
+        
+    })
+    /*
+    if(req.body.name == "Michi"){
+        res.status(300).send("Here is your Salt: 🧂")
+    }else{
+        res.status(418).send("No Salt for you Sir!")
+    }
+    */
+})
 
 
 //Socket Client Request annehmen
