@@ -2,9 +2,10 @@ const express = require('express')
 const path = require('path')
 const http = require('http')
 const socketio = require('socket.io')
-const crypto = require('crypto')
+const bcrypto = require('bcrypt')
 const fs = require('fs')
 const console = require('console')
+const networks = require('os').networkInterfaces();
 
 const PORT = process.env.PORT || 8080 //Für Heroku ?!Hosting Webside?!
 const app = express()
@@ -13,9 +14,11 @@ const io = socketio(server);
 
 app.use(express.static(path.join(__dirname, 'client')))
 
+
+
 //Start Server
 server.listen(PORT, () => {
-    console.log(`Hört dem Port ${PORT} zu!`)
+    console.log(`Webside: http://${getIPv4()}:${PORT}`)
 })
 
 //MIDDLEWARE
@@ -24,28 +27,44 @@ app.use(express.json())
 
 //ROUTES
 app.get('/salt', (req, res) => {
-    console.log("someone searchin for the white crystals...")
     parseJSON("./data.json", (data) => {
 
-        const salt = () => {
+        //Abfrage ob body inhalt existent ist xD
+
+        const salt = async () => {
             for(let e of data.userdata){
-                if(e.name === req.body.user){
+                if(e.name === req.body.username){
                     return e.salt;
                 }
             }
-            return false
+            console.time("salt")
+            const newSalt = await bcrypto.genSalt()
+            console.timeEnd("salt")
+            return newSalt
         }
-        res.send(salt())
+
         
+        salt().then((salt) => {
+            res.status(200).send(salt) 
+        })
     })
-    /*
-    if(req.body.name == "Michi"){
-        res.status(300).send("Here is your Salt: 🧂")
-    }else{
-        res.status(418).send("No Salt for you Sir!")
-    }
-    */
 })
+
+app.post('/login', (req, res) => {
+    parseJSON("./data.json", (data) => {
+        const login = () => {
+            for(let e of data.userdata){
+                if(req.body.username === e.name && req.body.password === e.password){ //Compare funktion benutzten!!!
+                    console.log("Eingelogt als " + e.name)
+                    return "Login erfolgreich"
+                }
+            }
+            return "Login fehlgeschlagen"
+        }
+        res.send(login())
+    })
+})
+
 
 
 //Socket Client Request annehmen
@@ -151,6 +170,7 @@ const parseJSON = (path, callback) => {
         }
     })
 }
+
 const writeJSON = (path, data) =>{
     fs.writeFile(path, JSON.stringify(data, null, 2), (err) =>{
         if(err){
@@ -159,6 +179,17 @@ const writeJSON = (path, data) =>{
     })
 }
 
+const getIPv4 = () => {
+    //console.log(network)
+    //Durchgehen der einzelnen Netzwerk Objekte
+  for (var network in networks) {
+    var j = networks[network]
 
-
-
+    for (var i = 0; i < j.length; i++) {
+      var q = j[i]
+      if (q.family === 'IPv4' && q.address !== '127.0.0.1' && !q.internal)
+        return q.address
+    }
+  }
+  return '0.0.0.0'
+}

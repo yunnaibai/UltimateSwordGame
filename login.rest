@@ -3,8 +3,16 @@ GET http://localhost:8080/salt/ HTTP/1.1
 Content-Type: application/json
 
 {
-    "user": "e9b4dad57d47a6fd2bc9fe695f6f9a22bca08603e9c48903b84a50423c26b7874349d55342f1a1170a72cbb97f9e1cd3e227eb32f6a87201e98d7aa726d63d2e"
+    "username": "Lennardd"
 }
 
 ###
+
+POST http://localhost:8080/login/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Lennard",
+    "password": "lol123"
+}
 
