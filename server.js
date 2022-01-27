@@ -3,6 +3,8 @@ const path = require('path')
 const http = require('http')
 const socketio = require('socket.io')
 const bcrypto = require('bcrypt')
+const crypto = require('crypto')
+
 const fs = require('fs')
 const console = require('console')
 const networks = require('os').networkInterfaces();
@@ -12,15 +14,19 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server);
 
+const ACCESS_TOKEN_SECRET = "61d562376435bf2bb33c209a38558d06f22af3022b5b7af42a551530b19040733b4f1b4cb928349123c0afd33712b75d72f72390d51edc73db3edf419c9a5621"
+//Auslagern in z.B eine .env oder .json
+
 app.use(express.static(path.join(__dirname, 'client')))
 
 
 
 //Start Server
 server.listen(PORT, () => {
-    console.log(`Webside: http://${getIPv4()}:${PORT}`)
+    console.log(`Connection: http://${getIPv4()}:${PORT}`)
 })
 
+//console.log(crypto.randomBytes(64).toString("hex"))
 //MIDDLEWARE
 app.use(express.json())
 
@@ -54,17 +60,47 @@ app.post('/login', (req, res) => {
     parseJSON("./data.json", (data) => {
         const login = () => {
             for(let e of data.userdata){
-                if(req.body.username === e.name && req.body.password === e.password){ //Compare funktion benutzten!!!
+                if(req.body.username === e.name && req.body.password === e.password){ 
                     console.log("Eingelogt als " + e.name)
-                    return "Login erfolgreich"
+
+                    const token = crypto.randomBytes(64).toString("hex") 
+                    const currentDate = new Date().getTime()
+                    const expire = currentDate + 1 * 60000
+                    console.log(currentDate, expire)
+
+                    e.expiration = expire
+                    e.access_token = token
+                    //console.log(e)
+                    writeJSON('./data.json', data)
+                    return e.access_token
                 }
             }
-            return "Login fehlgeschlagen"
+            return false
         }
-        res.send(login())
+        if(login() != false){
+            res.status(200).send(login())
+        }else{
+            res.sendStatus(403)
+        }
+        
     })
 })
 
+app.post('/authenticate', (req, res) => {
+    const authenticate = () => {
+        parseJSON("./data.json", (data) => {
+            for(let e of data.userdata){
+                if(e.access_token == req.body.access_token){
+                    
+                }
+            }
+        })
+    }
+})
+
+app.get('/register', (req, res) => {
+
+})
 
 
 //Socket Client Request annehmen
@@ -193,3 +229,8 @@ const getIPv4 = () => {
   }
   return '0.0.0.0'
 }
+
+const authenticateToken = (token) => {
+    
+}
+ 
