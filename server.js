@@ -87,14 +87,28 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/authenticate', (req, res) => {
+    
     const authenticate = () => {
         parseJSON("./data.json", (data) => {
             for(let e of data.userdata){
                 if(e.access_token == req.body.access_token){
-                    
+                    console.log("access: true")
+                    if(e.expiration == req.body.expiration){
+                        console.log("exp: true")
+                        console.log("json/api: ", e.expiration, " = ", req.body.expiration)
+                        console.log("json/api: ", e.access_token, " = ", req.body.access_token)
+                        return true
+                    }
                 }
             }
         })
+        return false
+    }
+    //console.log("output: ", authenticate())
+    if(authenticate() != false){
+        res.status(200).send(authenticate())
+    }else{
+        res.sendStatus(403)
     }
 })
 
