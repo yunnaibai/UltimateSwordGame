@@ -32,7 +32,7 @@ POST http://localhost:8080/authenticate/ HTTP/1.1
 Content-Type: application/json
 
 {
-    "access_token": "0b4dcdf13084ffb7969a68de3aa1f59bc44b4a9426ebb4ebdb4f513f7190f722b32a8a59254b5c2cddc4b183da5ce97a57b71f75e443b76884c79f221e08ee2e",
-    "expiration": "1643294973492"
+    "access_token": "1234",
+    "expiration": "abc"
 }
 
