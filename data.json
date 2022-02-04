@@ -7,10 +7,7 @@
     },
     {
       "name": "Lennard",
-      "salt": "bd38e1b43b8aa5ec09002405eb90f434",
-      "password": "Passwort123",
-      "access_token": "1234",
-      "expiration": "abc"
+      "salt": "lol123"
     }
   ]
 }

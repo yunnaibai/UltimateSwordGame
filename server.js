@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const http = require('http')
 const socketio = require('socket.io')
-const bcrypto = require('bcrypt')
+const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 
 const fs = require('fs')
@@ -32,26 +32,34 @@ app.use(express.json())
 
 
 //ROUTES
-app.get('/salt', (req, res) => {
+app.post('/salt', (req, res) => {
+    console.log(req.body)
     parseJSON("./data.json", (data) => {
 
-        //Abfrage ob body inhalt existent ist xD
 
         const salt = async () => {
+            console.log(req.body.username)
+            if(isEmptyObject(req.body.username)){
+                return false
+            }
             for(let e of data.userdata){
                 if(e.name === req.body.username){
                     return e.salt;
                 }
             }
             console.time("salt")
-            const newSalt = await bcrypto.genSalt()
+            const newSalt = await bcrypt.genSalt()
             console.timeEnd("salt")
             return newSalt
         }
 
         
         salt().then((salt) => {
-            res.status(200).send(salt) 
+            if(salt != false){
+            res.status(200).send({"salt": salt}) 
+            }else{
+                res.sendStatus(404)
+            }
         })
     })
 })
@@ -86,123 +94,47 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.post('/authenticate', (req, res) => {
-    
-    const authenticate = () => {
-        parseJSON("./data.json", (data) => {
+app.get('/authenticate', (req, res) => {
+    parseJSON("./data.json", (data) => {
+        const authenticate = () => {
             for(let e of data.userdata){
                 if(e.access_token == req.body.access_token){
-                    //console.log("access: true")
                     if(e.expiration == req.body.expiration){
-                        //console.log("exp: true")
-                        console.log("json/api: ", e.expiration, " = ", req.body.expiration)
-                        console.log("json/api: ", e.access_token, " = ", req.body.access_token)
                         return true
-                        //geht nich aus der funktion. Problem mit der snychroonität
                     }
                 }
             }
-        })
-        return false
-    }
-    //console.log("output: ", authenticate())
-    //if(authenticate() != false){
+            return false 
+        }
+    if(authenticate() != false){
         res.status(200).send(authenticate())
-    //}else{
-        //res.sendStatus(403)
-    //}
-})
-
-app.get('/register', (req, res) => {
-
-})
-
-
-//Socket Client Request annehmen
-/*
-io.on('connection', socket => {
-    console.log(`[Server] Client ${socket.id} ist zum Server connected`)
-    socket.emit('welcome', "Verbindung zum Server wurde hergestellt!")
-    //==================================================Login==================================================
-    socket.on('getSalt', user => {
-        parseJSON("./data.json", (data) => {
-
-            const salt = () => {
-                for(let e of data.userdata){
-                    if(e.name === user){
-                        return e.salt;
-                    }
-                }
-                return false
-            }
-            socket.emit('salt', salt())
-            
-        })
+    }else{
+    res.sendStatus(403)
+    }
     })
-    socket.on('login', loginData => {
-        parseJSON("./data.json", (data) => {
+    
+})
+
+app.post('/register', (req, res) => {
+    parseJSON('./data.json', (data) => {
+        const searchJSONonDups = () => {
             for(let e of data.userdata){
-                if(e.name === loginData.user){
-                    if(loginData.user === e.name && loginData.pass === e.password){
-                        console.log("Eingelogt als " + e.name)
-                        socket.emit('succesfullLogin', true)
-                    }else{
-                        socket.emit('succesfullLogin', false)
-                    }
+                if(e.name === req.body.username){
+                    return false
                 }
             }
-        })
+            return true
+        }
+        if(searchJSONonDups() === true){
+            data['userdata'].push({"name":req.body.username,"salt":req.body.salt,"password":req.body.pass})
+            writeJSON("data.json", data)
+            res.status(200).send(true)
+            console.log(`[Register] User: ${data.user} hinzugefügt`)
+        }else{
+            res.sendStatus(403)
+        }
     })
-    //==================================================Registriren==================================================
-    socket.on("generateSalt", user => {
-        parseJSON('./data.json', (json) => {
-            const searchJSONonDups = () => {
-                for(let e of json.userdata){
-                    if(e.name === user){
-                        return false
-                    }
-                }
-                return true
-            }
-
-            if(searchJSONonDups() == true){
-                var salt = crypto.randomBytes(16).toString('hex');
-                socket.emit('firstSalt', salt);
-            }else{
-                console.log("[Register] Username vergeben!")
-                socket.emit('firstSalt', false);
-            }
-        })
-        
-        
-    })
-    socket.on('register', data => {
-        parseJSON('./data.json', (json) => {
-            const searchJSONonDups = () => {
-                for(let e of json.userdata){
-                    if(e.name === data.user){
-                        return false
-                    }
-                }
-                return true
-            }
-            if(searchJSONonDups() === true){
-                json['userdata'].push({"name":data.user,"salt":data.salt,"password":data.pass})
-                writeJSON("data.json", json)
-                socket.emit("succesfullRegister", true)
-                console.log(`[Register] User: ${data.user} hinzugefügt`)
-            }else{
-                socket.emit("succesfullRegister", false)
-            }
-            
-        })
-
-    })
-    socket.on("disconnect", () => {
-        console.log(`${socket.id} ist disconnected`) 
-      })
 })
-*/
 
 const parseJSON = (path, callback) => {
     fs.readFile(path, 'utf-8', (err, data) => {
@@ -245,7 +177,4 @@ const getIPv4 = () => {
   return '0.0.0.0'
 }
 
-const authenticateToken = (token) => {
-    
-}
- 
+const isEmptyObject = (obj) => !Object.keys(obj).length

@@ -41,8 +41,31 @@ const randomMainColor = () => {
 randomMainColor()
 document.documentElement.style.setProperty('--main-color', mainColor);
 
+const login = () => {
+    //console.log("Login")
+    fetch("http://192.168.178.27:8080/salt/", {
+        method: 'POST',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            username: loginUsername
+        })
+    })
+    .then(res => {
+        if(!res.ok){
+            return {salt: false}
+        }else{
+            return res.json()
+        }
+    }).then(data => {
+        console.log(data.salt)
+    })
+}
 
 
+
+/*
 //==================================================Login==================================================
 const login = () => {
     if(blocked == false){
@@ -99,7 +122,7 @@ socket.on("succesfullRegister", (para) => {
         displayError();
     }
 })  
-
+*/
 const hash = input => CryptoJS.SHA512(input).toString()
 
 const displayError = () => {
