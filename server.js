@@ -38,7 +38,7 @@ app.post('/salt', (req, res) => {
 
 
         const salt = async () => {
-            console.log(req.body.username)
+            //console.log(req.body.username)
             if(isEmptyObject(req.body.username)){
                 return false
             }
@@ -56,7 +56,7 @@ app.post('/salt', (req, res) => {
         
         salt().then((salt) => {
             if(salt != false){
-            res.status(200).send({"salt": salt}) 
+            res.status(200).send({salt: salt}) 
             }else{
                 res.sendStatus(404)
             }
@@ -68,6 +68,8 @@ app.post('/login', (req, res) => {
     parseJSON("./data.json", (data) => {
         const login = () => {
             for(let e of data.userdata){
+                console.log(req.body.username, " = ", e.name)
+                console.log(req.body.password, " = ", e.password)
                 if(req.body.username === e.name && req.body.password === e.password){ 
                     console.log("Eingelogt als " + e.name)
 
@@ -80,7 +82,7 @@ app.post('/login', (req, res) => {
                     e.access_token = token
                     //console.log(e)
                     writeJSON('./data.json', data)
-                    return e.access_token
+                    return {token: e.access_token}
                 }
             }
             return false

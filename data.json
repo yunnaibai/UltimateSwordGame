@@ -7,7 +7,10 @@
     },
     {
       "name": "Lennard",
-      "salt": "lol123"
+      "salt": "salt123",
+      "password": "lol123",
+      "expiration": 1644077970272,
+      "access_token": "49a5eb3f5a5defbbdf2d1a239ef7d81050239beec12189a3d28fe7f04f7ac3b6c843fd1483e8456dbb79967ce77e03443306fd27c79bac062134dd5476bca0a2"
     }
   ]
 }

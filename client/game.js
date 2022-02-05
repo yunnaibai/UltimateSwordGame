@@ -42,14 +42,13 @@ randomMainColor()
 document.documentElement.style.setProperty('--main-color', mainColor);
 
 const login = () => {
-    //console.log("Login")
     fetch("http://192.168.178.27:8080/salt/", {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
         },
         body: JSON.stringify({
-            username: loginUsername
+            username: loginUsername.value
         })
     })
     .then(res => {
@@ -59,7 +58,29 @@ const login = () => {
             return res.json()
         }
     }).then(data => {
-        console.log(data.salt)
+        return data.salt
+    }).then((salt) => {
+        fetch("http://192.168.178.27:8080/login/", {
+            method: 'POST',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                username: loginUsername.value,
+                password: loginPassword.value
+                //Salt in den hash einrechnen
+            })
+        }).then((res) => {
+            if(res.ok){
+                displayCorrect()
+                return res.json()
+            }else{
+                displayError()
+            }
+        }).then((data) => {
+            if(data)
+            localStorage.setItem("token", data.token);
+        })
     })
 }
 
