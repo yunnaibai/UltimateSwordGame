@@ -42,6 +42,7 @@ randomMainColor()
 document.documentElement.style.setProperty('--main-color', mainColor);
 
 const login = () => {
+    if(authenticate() == true) return 
     fetch("http://192.168.178.27:8080/salt/", {
         method: 'POST',
         headers: {
@@ -84,7 +85,13 @@ const login = () => {
     })
 }
 
+const register = () => {
 
+}
+
+const authenticate = () => {
+
+}
 
 /*
 //==================================================Login==================================================

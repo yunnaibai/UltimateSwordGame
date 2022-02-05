@@ -101,9 +101,10 @@ app.get('/authenticate', (req, res) => {
         const authenticate = () => {
             for(let e of data.userdata){
                 if(e.access_token == req.body.access_token){
-                    if(e.expiration == req.body.expiration){
-                        return true
-                    }
+                    console.log(e.expiration, new Date())
+                    return true;
+                    //Expiration abfrage
+                    
                 }
             }
             return false 
