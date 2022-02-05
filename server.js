@@ -31,6 +31,9 @@ server.listen(PORT, () => {
 app.use(express.json())
 
 
+    
+
+
 //ROUTES
 app.post('/salt', (req, res) => {
     console.log(req.body)
@@ -74,9 +77,8 @@ app.post('/login', (req, res) => {
                     console.log("Eingelogt als " + e.name)
 
                     const token = crypto.randomBytes(64).toString("hex") 
-                    const currentDate = new Date().getTime()
-                    const expire = currentDate + 1 * 60000
-                    console.log(currentDate, expire)
+                    let expire = Date.now()
+                    expire += 60000
 
                     e.expiration = expire
                     e.access_token = token
@@ -101,7 +103,7 @@ app.get('/authenticate', (req, res) => {
         const authenticate = () => {
             for(let e of data.userdata){
                 if(e.access_token == req.body.access_token){
-                    console.log(e.expiration, new Date())
+                    console.log(e.expiration, new Date().getTime())
                     return true;
                     //Expiration abfrage
                     

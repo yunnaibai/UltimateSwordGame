@@ -86,11 +86,30 @@ const login = () => {
 }
 
 const register = () => {
-
+    fetch("http://192.168.178.27:8080/salt/", {
+        method: 'POST',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            username: loginUsername.value
+        })
+    })
+    .then(res => {
+        if(!res.ok){
+            return {salt: false}
+        }else{
+            return res.json()
+        }
+    }).then(data => {
+        return data.salt
+    })
 }
 
 const authenticate = () => {
+    fetch("http://192.168.178.27:8080/authenticate/", {
 
+    })
 }
 
 /*
