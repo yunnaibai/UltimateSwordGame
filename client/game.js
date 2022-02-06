@@ -42,7 +42,6 @@ randomMainColor()
 document.documentElement.style.setProperty('--main-color', mainColor);
 
 const login = () => {
-    if(authenticate() == true) return 
     fetch("http://192.168.178.27:8080/salt/", {
         method: 'POST',
         headers: {
@@ -56,10 +55,8 @@ const login = () => {
         if(!res.ok){
             return {salt: false}
         }else{
-            return res.json()
+            return res.json().salt
         }
-    }).then(data => {
-        return data.salt
     }).then((salt) => {
         fetch("http://192.168.178.27:8080/login/", {
             method: 'POST',
@@ -81,6 +78,7 @@ const login = () => {
         }).then((data) => {
             if(data)
             localStorage.setItem("token", data.token);
+            localStorage.setItem("username", loginUsername.value);
         })
     })
 }
@@ -107,10 +105,25 @@ const register = () => {
 }
 
 const authenticate = () => {
+    if(localStorage.getItem("token") == null || localStorage.getItem("username") == null) return false
     fetch("http://192.168.178.27:8080/authenticate/", {
-
+        method: 'POST',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            username: localStorage.getItem("username"),
+            access_token: localStorage.getItem("token")
+        })
+    }).then((res) => {
+        if(res.ok){
+            console.log("Eingelogt")
+            return true
+        }
+        return false
     })
 }
+authenticate()
 
 /*
 //==================================================Login==================================================
@@ -170,6 +183,8 @@ socket.on("succesfullRegister", (para) => {
     }
 })  
 */
+
+
 const hash = input => CryptoJS.SHA512(input).toString()
 
 const displayError = () => {

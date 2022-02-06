@@ -1,16 +1,18 @@
 {
   "userdata": [
     {
-      "name": "Jonas",
-      "salt": "d25a176baff2b4c166d5d3f15c9197ef",
-      "password": "Passwort123"
+      "name": "Spackor",
+      "salt": "salt321",
+      "password": "123",
+      "expiration": 1644155116642,
+      "access_token": "183f33dab9abb5c0a5b125c68e6c3dcb83fc77ebb12cb698c814b9915ff34ceccae1527c13fada4b8fe0c65358c83b6cd40d1f3c99f1756bfbfd31da34e7ecab"
     },
     {
       "name": "Lennard",
       "salt": "salt123",
       "password": "lol123",
-      "expiration": "Sat Feb 05 2022 21:22:54 GMT+0100 (Central European Standard Time)",
-      "access_token": "0a17eaa3150814d0b07267c6f62b01d88aa604d336e4a2c4d0cd4ef22359d265ff8e26765b2b85fe313160aa05bce252279e0f1d6c210bc4b41c1d9caa426cf7"
+      "expiration": 1644155592077,
+      "access_token": "394bc9f88a5ecc822b33385e1f2b3ec4643a5e2bce74497776fa777c48f9e983eb4424374481ce52b9814f32665c3053b6f4560bb0b38f651b18396160dd3d83"
     }
   ]
 }

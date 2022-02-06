@@ -29,10 +29,11 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/authenticate/ HTTP/1.1
+POST http://localhost:8080/authenticate/ HTTP/1.1
 Content-Type: application/json
 
 {
-    "access_token": "1234"
+    "username": "Lennard",
+    "access_token": "8a5688b2545200f5be3c0478cc3c30154547bcb8f7a773110ceb70a08d91d59f07853dff33f8526f3848ba5d4f9882c7fdad40cd382cb6579dbdc3fb5000a0cb"
 }
 

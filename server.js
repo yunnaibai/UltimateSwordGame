@@ -78,11 +78,10 @@ app.post('/login', (req, res) => {
 
                     const token = crypto.randomBytes(64).toString("hex") 
                     let expire = Date.now()
-                    expire += 60000
-
+                    expire += 120000 //60.000 = 1min
+                    console.log(expire)
                     e.expiration = expire
                     e.access_token = token
-                    //console.log(e)
                     writeJSON('./data.json', data)
                     return {token: e.access_token}
                 }
@@ -98,21 +97,23 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.get('/authenticate', (req, res) => {
+app.post('/authenticate', (req, res) => {
     parseJSON("./data.json", (data) => {
         const authenticate = () => {
             for(let e of data.userdata){
                 if(e.access_token == req.body.access_token){
-                    console.log(e.expiration, new Date().getTime())
-                    return true;
-                    //Expiration abfrage
-                    
+                    if(e.name == req.body.username){
+                        if((e.expiration - Date.now()) >= 0){
+                        console.log("Verbleibende Zeit: ", e.expiration - Date.now())
+                        return true;
+                        }
+                    }
                 }
             }
             return false 
         }
     if(authenticate() != false){
-        res.status(200).send(authenticate())
+        res.sendStatus(200)
     }else{
     res.sendStatus(403)
     }
