@@ -1,11 +1,11 @@
 const socket = io()
 
-
-let loginUsername = $('#user')
-let loginPassword = $('#pass')
-let registerUsername = $('#user1')
-let registerPassword = $('#pass1')
-let registerPasswordAgain = $('#pass2')
+const serverIP = "192.168.178.27" //Server gibt beim starten die IP aus
+const loginUsername = $('#user')
+const loginPassword = $('#pass')
+const registerUsername = $('#user1')
+const registerPassword = $('#pass1')
+const registerPasswordAgain = $('#pass2')
 
 let mainColor = "#ff5e80"
 let correctColor = "#54af48"
@@ -26,7 +26,7 @@ $(document).ready( async() => {
 
 const login = () => {
     console.log(loginUsername.val(), loginPassword.val())
-    fetch("http://192.168.178.27:8080/salt/", {
+    fetch(`http://${serverIP}:8080/salt/`, {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
@@ -42,7 +42,7 @@ const login = () => {
             return res.json().salt
         }
     }).then((salt) => {
-        fetch("http://192.168.178.27:8080/login/", {
+        fetch(`http://${serverIP}:8080/login/`, {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json'
@@ -68,7 +68,7 @@ const login = () => {
 }
 
 const register = () => {
-    fetch("http://192.168.178.27:8080/salt/", {
+    fetch(`http://${serverIP}:8080/salt/`, {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
@@ -85,12 +85,13 @@ const register = () => {
         }
     }).then(data => {
         return data.salt
+        //register
     })
 }
 
 const authenticate  = () => {
     if(localStorage.getItem("token") == null || localStorage.getItem("username") == null) return false
-    return fetch("http://192.168.178.27:8080/authenticate/", {
+    return fetch(`http://${serverIP}:8080/authenticate/`, {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'

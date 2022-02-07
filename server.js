@@ -17,20 +17,13 @@ const ACCESS_TOKEN_SECRET = "61d562376435bf2bb33c209a38558d06f22af3022b5b7af42a5
 
 app.use(express.static(path.join(__dirname, 'client')))
 
-
-
 //Start Server
 server.listen(PORT, () => {
     console.log(`Connection: http://${getIPv4()}:${PORT}`)
 })
 
-//console.log(crypto.randomBytes(64).toString("hex"))
 //MIDDLEWARE
 app.use(express.json())
-
-
-    
-
 
 //ROUTES
 app.post('/salt', (req, res) => {
