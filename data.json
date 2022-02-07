@@ -11,8 +11,8 @@
       "name": "Lennard",
       "salt": "salt123",
       "password": "lol123",
-      "expiration": 1644249256001,
-      "access_token": "2728f7ab8056ef17d926e968147f04282e1c2607946e5a533433876590037b16bb63f083497c5c24a4599005a778a1d578338042cf5be2e658394c826f5d5158"
+      "expiration": 1644250452619,
+      "access_token": "2e5519283af89b11d28ab1cdc51481bbe44192b0ee82d8fbd6a0956f2710b732e22b0365860eeb61a1c8d046d42501bc4fdd8dfc7850224f1ad2b62a9fe9a1cc"
     }
   ]
 }
