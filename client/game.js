@@ -1,54 +1,38 @@
 const socket = io()
 
 
-const content = document.getElementById("content")
-const loginUsername = document.getElementById("user")
-const loginPassword = document.getElementById("pass")
-const registerUsername = document.getElementById("user1")
-const registerPassword = document.getElementById("pass1")
-const registerPasswordAgain = document.getElementById("pass2")
+let loginUsername = $('#user')
+let loginPassword = $('#pass')
+let registerUsername = $('#user1')
+let registerPassword = $('#pass1')
+let registerPasswordAgain = $('#pass2')
 
 let mainColor = "#ff5e80"
-const correctColor = "#54af48"
-const errorColor = "#E50030"
-const transparentColor = "#00000000"
+let correctColor = "#54af48"
+let errorColor = "#E50030"
+let transparentColor = "#00000000"
 
 let blocked = false
 
+$(document).ready( async() => {
+    randomMainColor()
+    console.log(await authenticate())
+});
 
 
-const randomMainColor = () => {
-    let rnd = Math.floor(Math.random() * 5)
-    switch(rnd.toString()){
-        case "0":
-            mainColor = "#ff5e80"
-        break
-        case "1":
-            mainColor = "#D91E34"
-        break
-        case "2":
-            mainColor = "#7BB570"
-        break
-        case "3":
-            mainColor = "#7E22F0"
-        break
-        case "4":
-            mainColor = "#23A6DE"
-        break
-    }
-}
 
-randomMainColor()
-document.documentElement.style.setProperty('--main-color', mainColor);
+
+
 
 const login = () => {
+    console.log(loginUsername.val(), loginPassword.val())
     fetch("http://192.168.178.27:8080/salt/", {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
         },
         body: JSON.stringify({
-            username: loginUsername.value
+            username: loginUsername.val()
         })
     })
     .then(res => {
@@ -64,8 +48,8 @@ const login = () => {
                 "Content-Type": 'application/json'
             },
             body: JSON.stringify({
-                username: loginUsername.value,
-                password: loginPassword.value
+                username: loginUsername.val(),
+                password: loginPassword.val()
                 //Salt in den hash einrechnen
             })
         }).then((res) => {
@@ -78,7 +62,7 @@ const login = () => {
         }).then((data) => {
             if(data)
             localStorage.setItem("token", data.token);
-            localStorage.setItem("username", loginUsername.value);
+            localStorage.setItem("username", loginUsername.val());
         })
     })
 }
@@ -90,7 +74,7 @@ const register = () => {
             "Content-Type": 'application/json'
         },
         body: JSON.stringify({
-            username: loginUsername.value
+            username: loginUsername.val()
         })
     })
     .then(res => {
@@ -104,9 +88,9 @@ const register = () => {
     })
 }
 
-const authenticate = () => {
+const authenticate  = () => {
     if(localStorage.getItem("token") == null || localStorage.getItem("username") == null) return false
-    fetch("http://192.168.178.27:8080/authenticate/", {
+    return fetch("http://192.168.178.27:8080/authenticate/", {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
@@ -117,13 +101,14 @@ const authenticate = () => {
         })
     }).then((res) => {
         if(res.ok){
-            console.log("Eingelogt")
             return true
         }
         return false
+    }).catch(() => {
+        console.log("Error fetch")
+        return false
     })
 }
-authenticate()
 
 /*
 //==================================================Login==================================================
@@ -192,8 +177,8 @@ const displayError = () => {
     displayFakeLoading()
     setTimeout(() => {
         displayMoveDiv();
-        content.style.setProperty("--gradient-main-color", errorColor);
-        content.style.setProperty("--gradient-second-color", errorColor);
+        $('#content').css("--gradient-main-color", errorColor)
+        $('#content').css("--gradient-second-color", errorColor)
         setTimeout(() => {
             displaySetDefault()
         }, 500)
@@ -206,8 +191,8 @@ const displayCorrect = () => {
     displayFakeLoading()
     setTimeout(() => {
         displayMoveDiv();
-        content.style.setProperty("--gradient-main-color", correctColor);
-        content.style.setProperty("--gradient-second-color", correctColor);
+        $('#content').css("--gradient-main-color", correctColor)
+        $('#content').css("--gradient-second-color", correctColor)
         setTimeout(() => {
             displaySetDefault()
         }, 500)
@@ -216,12 +201,12 @@ const displayCorrect = () => {
     
 }
 const displaySetDefault = () =>{
-    content.style.setProperty("--gradient-main-color", transparentColor);
-    content.style.setProperty("--gradient-second-color", transparentColor);
-    content.style.setProperty("--div-width", "104%");
-    content.style.setProperty("--div-height", "104%");
-    content.style.setProperty("--div-top", "-2%");
-    content.style.setProperty("--div-left", "-2%");
+    $('#content').css("--gradient-main-color", transparentColor);
+    $('#content').css("--gradient-second-color", transparentColor);
+    $('#content').css("--div-width", "104%");
+    $('#content').css("--div-height", "104%");
+    $('#content').css("--div-top", "-2%");
+    $('#content').css("--div-left", "-2%");
 }
 const displayMoveDiv = () => {
     let divWidth = 95.0;
@@ -236,10 +221,10 @@ const displayMoveDiv = () => {
         divHeight+=0.4;
         divTop-=0.2;
         divLeft-=0.2;
-        content.style.setProperty("--div-width", `${divWidth}%`);
-        content.style.setProperty("--div-height", `${divHeight}%`);
-        content.style.setProperty("--div-top", `${divTop}%`);
-        content.style.setProperty("--div-left", `${divLeft}%`);
+        $('#content').css("--div-width", `${divWidth}%`);
+        $('#content').css("--div-height", `${divHeight}%`);
+        $('#content').css("--div-top", `${divTop}%`);
+        $('#content').css("--div-left", `${divLeft}%`);
         i++;
         if(i > 15){
             clearInterval(j)
@@ -247,11 +232,31 @@ const displayMoveDiv = () => {
     }, 40)
 }
 const displayFakeLoading = () => {
-    content.style.setProperty("--gradient-main-color", mainColor);
-    content.style.setProperty("--gradient-second-color", transparentColor);
-    content.style.setProperty("--div-width", "95%");
-    content.style.setProperty("--div-height", "96%");
-    content.style.setProperty("--div-top", "2%");
-    content.style.setProperty("--div-left", "2.5%");
+    $('#content').css("--gradient-main-color", mainColor);
+    $('#content').css("--gradient-second-color", transparentColor);
+    $('#content').css("--div-width", "95%");
+    $('#content').css("--div-height", "96%");
+    $('#content').css("--div-top", "2%");
+    $('#content').css("--div-left", "2.5%");
 }
-
+const randomMainColor = () => {
+    let rnd = Math.floor(Math.random() * 5)
+    switch(rnd.toString()){
+        case "0":
+            mainColor = "#ff5e80"
+        break
+        case "1":
+            mainColor = "#D91E34"
+        break
+        case "2":
+            mainColor = "#7BB570"
+        break
+        case "3":
+            mainColor = "#7E22F0"
+        break
+        case "4":
+            mainColor = "#23A6DE"
+        break
+    }
+    $(':root').css('--main-color', mainColor)
+}

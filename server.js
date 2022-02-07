@@ -4,10 +4,8 @@ const http = require('http')
 const socketio = require('socket.io')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
-
 const fs = require('fs')
 const console = require('console')
-const networks = require('os').networkInterfaces();
 
 const PORT = process.env.PORT || 8080 //Für Heroku ?!Hosting Webside?!
 const app = express()
@@ -104,7 +102,7 @@ app.post('/authenticate', (req, res) => {
                 if(e.access_token == req.body.access_token){
                     if(e.name == req.body.username){
                         if((e.expiration - Date.now()) >= 0){
-                        console.log("Verbleibende Zeit: ", e.expiration - Date.now())
+                        console.log("Verbleibende Zeit:", Math.floor((e.expiration - Date.now()) / 1000) + "s")
                         return true;
                         }
                     }
@@ -115,7 +113,7 @@ app.post('/authenticate', (req, res) => {
     if(authenticate() != false){
         res.sendStatus(200)
     }else{
-    res.sendStatus(403)
+    res.sendStatus(401)
     }
     })
     
@@ -169,18 +167,18 @@ const writeJSON = (path, data) =>{
 }
 
 const getIPv4 = () => {
-    //console.log(network)
-    //Durchgehen der einzelnen Netzwerk Objekte
-  for (var network in networks) {
-    var j = networks[network]
+    const networks = require('os').networkInterfaces();
+    //iteration durch ein komisches netzwerk objekt 
+    for (var network in networks) {
+        var j = networks[network]
 
-    for (var i = 0; i < j.length; i++) {
-      var q = j[i]
-      if (q.family === 'IPv4' && q.address !== '127.0.0.1' && !q.internal)
-        return q.address
+        for (var i = 0; i < j.length; i++) {
+        var q = j[i]
+        if (q.family === 'IPv4' && q.address !== '127.0.0.1' && !q.internal)
+            return q.address
+        }
     }
-  }
-  return '0.0.0.0'
+    return '0.0.0.0'
 }
 
 const isEmptyObject = (obj) => !Object.keys(obj).length
