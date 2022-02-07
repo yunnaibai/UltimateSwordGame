@@ -19,11 +19,6 @@ $(document).ready( async() => {
     console.log(await authenticate())
 });
 
-
-
-
-
-
 const login = () => {
     console.log(loginUsername.val(), loginPassword.val())
     fetch("http://192.168.178.27:8080/salt/", {
@@ -81,10 +76,10 @@ const register = () => {
         if(!res.ok){
             return {salt: false}
         }else{
-            return res.json()
+            return res.json().salt
         }
-    }).then(data => {
-        return data.salt
+    }).then(salt => {
+        
     })
 }
 
