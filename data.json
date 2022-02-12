@@ -1,18 +1,16 @@
 {
   "userdata": [
     {
-      "name": "Spackor",
-      "salt": "salt321",
-      "password": "123",
-      "expiration": 1644155116642,
-      "access_token": "183f33dab9abb5c0a5b125c68e6c3dcb83fc77ebb12cb698c814b9915ff34ceccae1527c13fada4b8fe0c65358c83b6cd40d1f3c99f1756bfbfd31da34e7ecab"
+      "name": "Lenny",
+      "salt": "$2b$10$jCjbWeUGShFQhVlkSib2bO",
+      "password": "06789bf5fec8e6a97f31599f50dacef6213eaf0433c50562414490173e08ac9cca7ecff607853fb0c0267295234d70f3e4d94e56869f332fac46de11e9a60d78",
+      "expiration": 1644687947582,
+      "access_token": "e1540d224c6e4a45e20f1d590391cfc5785975751b9819b9d43632d1aaf5b1827d77fc14ba0d230bf153a15de592465999b79d203bbcf2bc27354f7b49314345"
     },
     {
       "name": "Lennard",
-      "salt": "salt123",
-      "password": "lol123",
-      "expiration": 1644250452619,
-      "access_token": "2e5519283af89b11d28ab1cdc51481bbe44192b0ee82d8fbd6a0956f2710b732e22b0365860eeb61a1c8d046d42501bc4fdd8dfc7850224f1ad2b62a9fe9a1cc"
+      "salt": "$2b$10$R4Trg7FzgpGkpPOPQGpN9O",
+      "password": "ba335df877fb698f26f4c003cc83e6e1b5f1ca5499289ca940d423bcd788ed2c93a6b7b0295442c7626ea860810a3af0867628b65183e382d81537b820bfa9ff"
     }
   ]
 }

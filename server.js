@@ -29,8 +29,6 @@ app.use(express.json())
 app.post('/salt', (req, res) => {
     console.log(req.body)
     parseJSON("./data.json", (data) => {
-
-
         const salt = async () => {
             //console.log(req.body.username)
             if(isEmptyObject(req.body.username)){
@@ -44,10 +42,9 @@ app.post('/salt', (req, res) => {
             console.time("salt")
             const newSalt = await bcrypt.genSalt()
             console.timeEnd("salt")
+            console.log(newSalt)
             return newSalt
         }
-
-        
         salt().then((salt) => {
             if(salt != false){
             res.status(200).send({salt: salt}) 
@@ -123,10 +120,11 @@ app.post('/register', (req, res) => {
             return true
         }
         if(searchJSONonDups() === true){
-            data['userdata'].push({"name":req.body.username,"salt":req.body.salt,"password":req.body.pass})
+            console.log(req.body)
+            data['userdata'].push({"name":req.body.username,"salt":req.body.salt,"password":req.body.password})
             writeJSON("data.json", data)
             res.status(200).send(true)
-            console.log(`[Register] User: ${data.user} hinzugefügt`)
+            console.log(`[Register] User: ${req.body.username} hinzugefügt`)
         }else{
             res.sendStatus(403)
         }

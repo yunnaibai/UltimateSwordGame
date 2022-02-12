@@ -39,9 +39,9 @@ const login = () => {
         if(!res.ok){
             return {salt: false}
         }else{
-            return res.json().salt
+            return res.json()
         }
-    }).then((salt) => {
+    }).then((data) => {
         fetch(`http://${serverIP}:8080/login/`, {
             method: 'POST',
             headers: {
@@ -49,7 +49,7 @@ const login = () => {
             },
             body: JSON.stringify({
                 username: loginUsername.val(),
-                password: loginPassword.val()
+                password: hash(data.salt + loginPassword.val())
                 //Salt in den hash einrechnen
             })
         }).then((res) => {
@@ -74,18 +74,36 @@ const register = () => {
             "Content-Type": 'application/json'
         },
         body: JSON.stringify({
-            username: loginUsername.val()
+            username: registerUsername.val()
         })
     })
     .then(res => {
         if(!res.ok){
+            console.log("res: false")
             return {salt: false}
         }else{
+            console.log("try to read json")
             return res.json()
+            //Salt will nich idk why????
         }
     }).then(data => {
-        return data.salt
-        //register
+        console.log(data.salt)
+        fetch(`http://${serverIP}:8080/register/`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                username: registerUsername.val(),
+                password: hash(data.salt + registerPassword.val()),
+                salt: data.salt
+            })
+        }).then((res) => {
+            if(!res.ok) return false
+            return res.json()
+        }).then((data) => {
+            console.log(data)
+        })
     })
 }
 
@@ -110,65 +128,6 @@ const authenticate  = () => {
         return false
     })
 }
-
-/*
-//==================================================Login==================================================
-const login = () => {
-    if(blocked == false){
-        if(loginUsername.value !== "" && loginPassword.value !== ""){
-            socket.emit("getSalt", hash(loginUsername.value))
-        }
-    }
-}
-socket.on("salt", (salt) => {
-    if(salt !== false){
-        var login = {
-            pass: hash(loginPassword.value + salt),
-            user: hash(loginUsername.value)
-        }
-        socket.emit("login",login)
-    }else{
-        displayError();
-    }
-})
-socket.on('succesfullLogin', (para) =>{
-    if(para){
-        displayCorrect()
-        //location.href = "./game.html";
-    }else{
-        displayError()
-    }
-})
-//==================================================Registrien==================================================
-const register = () => {
-    if(blocked == false){
-        if(registerPassword.value === registerPasswordAgain.value && registerUsername.value !== "" && registerPassword.value !== "" && registerPasswordAgain.value !== ""){
-            socket.emit("generateSalt", hash(registerUsername.value))
-        }
-    }
-}
-socket.on("firstSalt", (salt) => {
-        
-    var register = {
-        pass: hash(registerPassword.value + salt),
-        user: hash(registerUsername.value),
-        salt: salt
-    }
-    if(salt !== false){
-    socket.emit("register", register)
-    console.log("User noch nicht existent")
-    }else{
-        displayError();
-    }
-})
-socket.on("succesfullRegister", (para) => {
-    if(para == true){
-        displayCorrect();
-    }else{
-        displayError();
-    }
-})  
-*/
 
 
 const hash = input => CryptoJS.SHA512(input).toString()
