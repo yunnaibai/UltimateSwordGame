@@ -16,7 +16,10 @@ let blocked = false
 
 $(document).ready( async() => {
     randomMainColor()
-    
+    if(await authenticate()){
+        console.log(true)
+        window.location.replace("game");
+    }
 });
 
 

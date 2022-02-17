@@ -7,15 +7,14 @@ const crypto = require('crypto')
 const fs = require('fs')
 const console = require('console')
 
-const PORT = process.env.PORT || 8080 //Für Heroku ?!Hosting Webside?!
+const PORT = process.env.PORT || 8080
 const app = express()
 const server = http.createServer(app)
 const io = socketio(server);
 
-const ACCESS_TOKEN_SECRET = "61d562376435bf2bb33c209a38558d06f22af3022b5b7af42a551530b19040733b4f1b4cb928349123c0afd33712b75d72f72390d51edc73db3edf419c9a5621"
-//Auslagern in z.B eine .env oder .json
 
 app.use(express.static(path.join(__dirname, 'client')))
+
 
 //Start Server
 server.listen(PORT, () => {
@@ -92,7 +91,7 @@ app.post('/authenticate', (req, res) => {
                 if(e.access_token == req.body.access_token){
                     if(e.name == req.body.username){
                         if((e.expiration - Date.now()) >= 0){
-                        console.log("Verbleibende Zeit:", Math.floor((e.expiration - Date.now()) / 1000) + "s")
+                        console.log(`Verbleibende Zeit: ${Math.floor((e.expiration - Date.now()) / 1000)}s`)
                         return true;
                         }
                     }
@@ -102,6 +101,8 @@ app.post('/authenticate', (req, res) => {
         }
     if(authenticate() != false){
         res.sendStatus(200)
+        console.log("authenticated")
+        //app.use("/game", express.static(path.join(__dirname, 'client/game')))
     }else{
     res.sendStatus(401)
     }
