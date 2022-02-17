@@ -16,7 +16,7 @@ let blocked = false
 
 $(document).ready( async() => {
     randomMainColor()
-    console.log(await authenticate())
+    
 });
 
 
