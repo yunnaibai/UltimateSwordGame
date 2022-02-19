@@ -7,6 +7,7 @@ import auth from "../../auth.js"
 
 const socket = io();
 
+if(!await auth()) window.location.href = window.location.href.replace("/game", "")
 
 document.getElementById("canvas").setAttribute("width", levelSize[0])
 document.getElementById("canvas").setAttribute("height", levelSize[1])
@@ -16,9 +17,11 @@ const box = new Box({
     size: [100, 100],
     color: "red"
 })
-if(!await auth()){
-    window.location.href = window.location.href.replace("/game", "")
-}
+
+socket.on("players", (data) => {
+    console.log("data:", data)
+})
+
 
 let i = 0;
 
@@ -26,8 +29,8 @@ timer.update = (deltaTime) =>
 {
     //console.log(Math.round(deltaTime * 100) / 100)
     i++
-    if(i%60 == 0){
-        console.log("Timer:", i/60 + "s")
+    if(i%10 == 0){
+        socket.emit("player", {pos: box.pos, name: localStorage.getItem("username")})
     }
 
     clearCanvas()

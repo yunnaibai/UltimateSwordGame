@@ -127,6 +127,14 @@ app.post('/register', (req, res) => {
 
 io.on('connection', (socket) => {
     console.log('[GameServer] Client connected');
+    socket.on("player", (data) => {
+        socket.emit("players", data)
+        console.log(data)
+    })
+
+
+
+
     socket.on('disconnect', () => {
       console.log('[GameServer] Client disconnected');
     });
