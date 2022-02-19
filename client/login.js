@@ -1,6 +1,3 @@
-const socket = io()
-
-const serverIP = "192.168.178.27" //Server gibt beim starten die IP aus
 const loginUsername = $('#user')
 const loginPassword = $('#pass')
 const registerUsername = $('#user1')
@@ -23,13 +20,9 @@ $(document).ready( async() => {
 });
 
 
-
-
-
-
 const login = () => {
     console.log(loginUsername.val(), loginPassword.val())
-    fetch(`http://${serverIP}:8080/salt/`, {
+    fetch(`${window.location.href}salt/`, {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
@@ -45,7 +38,7 @@ const login = () => {
             return res.json()
         }
     }).then((data) => {
-        fetch(`http://${serverIP}:8080/login/`, {
+        fetch(`${window.location.href}login/`, {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json'
@@ -71,7 +64,7 @@ const login = () => {
 }
 
 const register = () => {
-    fetch(`http://${serverIP}:8080/salt/`, {
+    fetch(`${window.location.href}salt/`, {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
@@ -91,7 +84,7 @@ const register = () => {
         }
     }).then(data => {
         console.log(data.salt)
-        fetch(`http://${serverIP}:8080/register/`, {
+        fetch(`${window.location.href}register/`, {
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json'
@@ -110,9 +103,9 @@ const register = () => {
     })
 }
 
-const authenticate  = () => {
+function authenticate(){
     if(localStorage.getItem("token") == null || localStorage.getItem("username") == null) return false
-    return fetch(`http://${serverIP}:8080/authenticate/`, {
+    return fetch(`${window.location.href}authenticate/`, {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
@@ -131,8 +124,6 @@ const authenticate  = () => {
         return false
     })
 }
-
-
 const hash = input => CryptoJS.SHA512(input).toString()
 
 const displayError = () => {

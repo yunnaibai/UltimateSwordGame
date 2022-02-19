@@ -58,15 +58,13 @@ app.post('/login', (req, res) => {
     parseJSON("./data.json", (data) => {
         const login = () => {
             for(let e of data.userdata){
-                console.log(req.body.username, " = ", e.name)
-                console.log(req.body.password, " = ", e.password)
+                //console.log(req.body.username, " = ", e.name)
+                //console.log(req.body.password, " = ", e.password)
                 if(req.body.username === e.name && req.body.password === e.password){ 
-                    console.log("Eingelogt als " + e.name)
-
                     const token = crypto.randomBytes(64).toString("hex") 
                     let expire = Date.now()
-                    expire += 120000 //60.000 = 1min
-                    console.log(expire)
+                    expire += 30000 //60.000 = 1min
+                    console.log(`[Login] ${e.name} hat sich eingelogt`)
                     e.expiration = expire
                     e.access_token = token
                     writeJSON('./data.json', data)
@@ -75,12 +73,8 @@ app.post('/login', (req, res) => {
             }
             return false
         }
-        if(login() != false){
-            res.status(200).send(login())
-        }else{
-            res.sendStatus(403)
-        }
-        
+        let token = login()
+        token ? res.status(200).send(token) : res.sendStatus(403)
     })
 })
 
@@ -101,8 +95,6 @@ app.post('/authenticate', (req, res) => {
         }
     if(authenticate() != false){
         res.sendStatus(200)
-        console.log("authenticated")
-        //app.use("/game", express.static(path.join(__dirname, 'client/game')))
     }else{
     res.sendStatus(401)
     }
@@ -131,6 +123,17 @@ app.post('/register', (req, res) => {
         }
     })
 })
+//Game Server
+
+io.on('connection', (socket) => {
+    console.log('[GameServer] Client connected');
+    socket.on('disconnect', () => {
+      console.log('[GameServer] Client disconnected');
+    });
+  });
+
+
+
 
 const parseJSON = (path, callback) => {
     fs.readFile(path, 'utf-8', (err, data) => {

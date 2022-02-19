@@ -1,1 +1,1 @@
-export const levelSize = [800, 600]
+export const levelSize = [1500, 700]
