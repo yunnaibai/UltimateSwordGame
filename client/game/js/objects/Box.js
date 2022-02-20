@@ -13,6 +13,17 @@ export class Box extends Rectangle
         this.onGround = false   // Gibt an, ob das Objekt auf dem Boden ist
         this.moveLeft = false   // Gibt an, ob sich das Objekt nach links bewegt
         this.moveRight = false  // Gibt an, ob sich das Objekt nach rechts bewegt
+
+        addEventListener("keydown", (e) => {
+            if(e.repeat) return
+            if(e.key == "ArrowRight") this.moveRight = true
+            if (e.key == "ArrowLeft") this.moveLeft = true
+        })
+        addEventListener("keyup", (e) => {
+            if(e.repeat) return
+            if(e.key == "ArrowRight") this.moveRight = false
+            if (e.key == "ArrowLeft") this.moveLeft = false
+        })
     }
 
     update(deltaTime){
@@ -46,16 +57,6 @@ export class Box extends Rectangle
     }
     move(){
         //Perforamnce? Werden mehrere Listner gestartet?
-        addEventListener("keydown", (e) => {
-            if(e.repeat) return
-            if(e.key == "ArrowRight") this.moveRight = true
-            if (e.key == "ArrowLeft") this.moveLeft = true
-        })
-        addEventListener("keyup", (e) => {
-            if(e.repeat) return
-            if(e.key == "ArrowRight") this.moveRight = false
-            if (e.key == "ArrowLeft") this.moveLeft = false
-        })
         if(this.moveRight == true){
             this.vel[0] = 0.5
         } else if(this.moveLeft == true){

@@ -125,11 +125,24 @@ app.post('/register', (req, res) => {
 })
 //Game Server
 
+let playerData = { players: []}
+
 io.on('connection', (socket) => {
-    console.log('[GameServer] Client connected');
+    console.log(`[GameServer] ${socket.handshake.address}`);
+
     socket.on("player", (data) => {
-        socket.emit("players", data)
-        console.log(data)
+        //socket.broadcast.emit("players", data)
+        const doNotDup = () => {
+            playerData.players.forEach((i) => {
+                console.log(playerData.players[i].name, data.name)
+                if(playerData.players[i].name != data.name){
+                    //ehm mach mal ordentlich
+                }
+            })
+        }
+        
+        //console.log(playerData)
+        //console.clear()
     })
 
 
