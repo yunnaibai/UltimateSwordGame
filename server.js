@@ -63,7 +63,7 @@ app.post('/login', (req, res) => {
                 if(req.body.username === e.name && req.body.password === e.password){ 
                     const token = crypto.randomBytes(64).toString("hex") 
                     let expire = Date.now()
-                    expire += 30000 //60.000 = 1min
+                    expire += 300000 //60.000 = 1min
                     console.log(`[Login] ${e.name} hat sich eingelogt`)
                     e.expiration = expire
                     e.access_token = token
@@ -131,27 +131,31 @@ io.on('connection', (socket) => {
     console.log(`[GameServer] ${socket.handshake.address}`);
 
     socket.on("player", (data) => {
-        //socket.broadcast.emit("players", data)
         const doNotDup = () => {
-            playerData.players.forEach((i) => {
-                console.log(playerData.players[i].name, data.name)
-                if(playerData.players[i].name != data.name){
-                    //ehm mach mal ordentlich
+            if(playerData.players.length == 0) playerData.players.push({pos: [0, 0], name: data.name})
+
+            for(player of playerData.players){
+                if(player.name == data.name){
+                    player.pos = data.pos
+                    return
+                    //console.log("user updated")
                 }
-            })
+            }
+            playerData.players.push(data)
         }
-        
-        //console.log(playerData)
-        //console.clear()
+        doNotDup()
+        console.clear()
+        console.log(playerData.players)
     })
-
-
-
-
+    
     socket.on('disconnect', () => {
       console.log('[GameServer] Client disconnected');
     });
-  });
+});
+
+setInterval(() => {
+    io.sockets.emit("players", playerData)
+}, 1000/6)
 
 
 

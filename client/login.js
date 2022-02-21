@@ -80,7 +80,6 @@ const register = () => {
         }else{
             console.log("try to read json")
             return res.json()
-            //Salt will nich idk why????
         }
     }).then(data => {
         console.log(data.salt)

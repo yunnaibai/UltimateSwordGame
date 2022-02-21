@@ -19,7 +19,10 @@ const box = new Box({
 })
 
 socket.on("players", (data) => {
-    console.log("data:", data)
+    console.clear()
+    data.players.forEach(player => {
+      console.log(`${player.name}: ${player.pos[0]}, ${player.pos[1]}`)  
+    })
 })
 
 
@@ -29,7 +32,7 @@ timer.update = (deltaTime) =>
 {
     //console.log(Math.round(deltaTime * 100) / 100)
     i++
-    if(i%10 == 0){
+    if(i%10 == 0){ // 1/6sec
         socket.emit("player", {pos: box.pos, name: localStorage.getItem("username")})
     }
 
