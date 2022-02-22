@@ -14,7 +14,7 @@ document.getElementById("canvas").setAttribute("height", levelSize[1])
 
 const box = new Box({
     pos: [100, 100],
-    size: [100, 100],
+    size: [50, 50],
     color: "red"
 })
 
@@ -22,6 +22,7 @@ socket.on("players", (data) => {
     console.clear()
     data.players.forEach(player => {
       console.log(`${player.name}: ${player.pos[0]}, ${player.pos[1]}`)  
+      console.log(`${localStorage.getItem("username")}(local): ${box.pos[0]}, ${box.pos[1]}`)
     })
 })
 

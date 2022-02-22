@@ -57,8 +57,12 @@ const login = () => {
             }
         }).then((data) => {
             if(data)
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("username", loginUsername.val());
+            localStorage.setItem("token", data.token)
+            localStorage.setItem("username", loginUsername.val())
+            if(authenticate()){
+                console.log(true)
+                window.location.replace("game");
+            }
         })
     })
 }
@@ -167,7 +171,6 @@ const displayMoveDiv = () => {
     let divTop = 2.0;
     let divLeft = 2.5;
 
-    
     let i = 0;
     let j = setInterval(() => {
         divWidth+=0.4;
@@ -192,6 +195,7 @@ const displayFakeLoading = () => {
     $('#content').css("--div-top", "2%");
     $('#content').css("--div-left", "2.5%");
 }
+
 const randomMainColor = () => {
     let rnd = Math.floor(Math.random() * 5)
     switch(rnd.toString()){

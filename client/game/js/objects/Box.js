@@ -7,9 +7,9 @@ export class Box extends Rectangle
     {
         super(options)
         this.grav = 0.005     // Gravitation: beshcleunigt die Box auf
-        this.friction = 0.1     // Widerstand: Bremmst automatisch die Geschwindigkeit auf 0 ab
+        this.friction = 0.12     // Widerstand: Bremmst automatisch die Geschwindigkeit auf 0 ab
         this.vel = [0,0]        // Geschwindigkeit
-        this.acc = 0            // Beschleunigung
+        this.acc = 0           // Beschleunigung
         this.onGround = false   // Gibt an, ob das Objekt auf dem Boden ist
         this.moveLeft = false   // Gibt an, ob sich das Objekt nach links bewegt
         this.moveRight = false  // Gibt an, ob sich das Objekt nach rechts bewegt
