@@ -14,6 +14,7 @@ export class Box extends Rectangle
         this.moveLeft = false   // Gibt an, ob sich das Objekt nach links bewegt
         this.moveRight = false
         this.moveUp = false  // Gibt an, ob sich das Objekt nach rechts bewegt
+        this.name = ""
 
         addEventListener("keydown", (e) => {
             if(e.repeat) return
@@ -71,4 +72,9 @@ export class Box extends Rectangle
         }
         //console.log(this.vel[1])
     }
+
+    sendClientData(socket){
+        socket.emit("player", {pos: this.pos, name: localStorage.getItem("username")})
+    }
+
 }
