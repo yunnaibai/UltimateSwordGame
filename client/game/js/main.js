@@ -20,7 +20,7 @@ const clientPlayer = new Box({
 })
 
 const players = new Players()
-players.autoUpdate()
+players.autoUpdate(socket)
 
 let i = 0;
 

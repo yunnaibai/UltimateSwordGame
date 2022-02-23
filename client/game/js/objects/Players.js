@@ -5,18 +5,24 @@ export class Players
     }
     autoUpdate(socket){
         socket.on("players", (data) => {
+            //console.clear()
+            //console.log(data)
             const lookForPlayer = () => {
-                for(player of data.players){
-                    for(localPlayer of this.players){
+                for(const player of data.players){
+                    //console.log(player.name)
+                    if(this.players.length == 0) this.addPlayer(player.pos, player.name)
+                    for(const localPlayer of this.players){
                         if(player.name == localPlayer.name && player.name != localStorage.getItem("username")){
+                            console.log("update pos")
                             localPlayer.pos[player.pos[0], player.pos[1]]
                             localPlayer.name = player.name
                             break
                         }
-                        addPlayer(data.pos, data.name)
+                        this.addPlayer(data.pos, data.name)
                     }
                 }
             }
+            lookForPlayer()
         })
     }
     addPlayer(pos, name){
@@ -28,6 +34,7 @@ export class Players
             name: name
         })
         this.players.push(player)
+        console.log("new Player added")
     }
 
     updateDrawPlayers(){
