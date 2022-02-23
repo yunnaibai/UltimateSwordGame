@@ -19,11 +19,11 @@ const box = new Box({
 })
 
 socket.on("players", (data) => {
-    console.clear()
+    //console.clear()
     data.players.forEach(player => {
-      console.log(`${player.name}: ${player.pos[0]}, ${player.pos[1]}`)  
-      console.log(`${localStorage.getItem("username")}(local): ${box.pos[0]}, ${box.pos[1]}`)
+      //console.log(`${player.name}: ${player.pos[0]}, ${player.pos[1]}`)  
     })
+    //console.log(`${localStorage.getItem("username")}(local): ${box.pos[0]}, ${box.pos[1]}`)
 })
 
 
