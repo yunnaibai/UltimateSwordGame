@@ -125,11 +125,37 @@ app.post('/register', (req, res) => {
 })
 //Game Server
 
-let playerData = { players: []}
+let players = []
 
 io.on('connection', (socket) => {
     console.log(`[GameServer] ${socket.handshake.address}`);
 
+    socket.on("clientJoin", (data) => {
+        players.push({pos: data.pos, name: data.name})
+        console.log(data.name,"added!")
+        io.sockets.emit("playerJoin", data)
+    })
+    socket.on("clientLeave", (data) => {
+        for(player of players){
+            if(player.name == data.name){
+                console.log(data.name,"removed!")
+                //remove player in array
+                io.sockets.emit("playerLeave", data)
+            }
+        }
+    })
+    socket.on("clientUpdate", (data) => {
+        console.clear()
+        console.log(players)
+        for(player of players){
+            if(player.name == data.name){
+                player.pos = data.pos
+            }
+        }
+    })
+
+
+    /*
     socket.on("player", (data) => {
         const doNotDup = () => {
             if(playerData.players.length == 0) playerData.players.push({pos: [0, 0], name: data.name})
@@ -146,15 +172,15 @@ io.on('connection', (socket) => {
         //console.clear()
         //console.log(playerData.players)
     })
-    
+    */
     socket.on('disconnect', () => {
       console.log('[GameServer] Client disconnected');
     });
 });
 
 setInterval(() => {
-    io.sockets.emit("players", playerData)
-}, 1000/6)
+    io.sockets.emit("updatePlayers", players)
+}, 2000) //1000/6
 
 
 

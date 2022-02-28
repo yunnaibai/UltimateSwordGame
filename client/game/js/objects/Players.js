@@ -1,32 +1,20 @@
+import {Box} from "./Box.js"
 export class Players 
 {
-    constructor(options){
+    constructor(socket){
         this.players = []
-    }
-    autoUpdate(socket){
-        socket.on("players", (data) => {
-            //console.clear()
-            //console.log(data)
-            const lookForPlayer = () => {
-                for(const player of data.players){
-                    //console.log(player.name)
-                    if(this.players.length == 0) this.addPlayer(player.pos, player.name)
-                    for(const localPlayer of this.players){
-                        if(player.name == localPlayer.name && player.name != localStorage.getItem("username")){
-                            console.log("update pos")
-                            localPlayer.pos[player.pos[0], player.pos[1]]
-                            localPlayer.name = player.name
-                            break
-                        }
-                        this.addPlayer(data.pos, data.name)
-                    }
-                }
-            }
-            lookForPlayer()
+        this.socket = null
+        socket.on("updatePlayers", (data) => {
+            this.updatePosPlayers(data)
+        })
+        socket.on("playerJoin", (data) => {
+            this.addPlayer(data.pos, data.name)
         })
     }
+
+
     addPlayer(pos, name){
-        if(player.name != localStorage.getItem("username")) return
+        //if(player.name != localStorage.getItem("username")) return
         const player = new Box({
             pos: pos,
             size: [50, 50],
@@ -34,11 +22,21 @@ export class Players
             name: name
         })
         this.players.push(player)
-        console.log("new Player added")
+
+        console.log(`Player ${name} added`)
     }
 
-    updateDrawPlayers(){
-        for(player of this.players){
+    delPlayer(name){
+
+    }
+    updatePosPlayers(data){
+        this.players = data
+    }
+    
+
+    updatePlayers(deltaTime){
+        if(this.players.length == 0) return
+        for(let player of this.players){
             player.update(deltaTime)
             player.inLevelBounds()
         }

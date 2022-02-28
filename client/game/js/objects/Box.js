@@ -28,6 +28,7 @@ export class Box extends Rectangle
             if (e.key == "ArrowLeft") this.moveLeft = false
             if(e.key == "ArrowUp") this.moveUp = false
         })
+
     }
 
     update(deltaTime){
@@ -74,7 +75,7 @@ export class Box extends Rectangle
     }
 
     sendClientData(socket){
-        socket.emit("player", {pos: this.pos, name: localStorage.getItem("username")})
+        socket.emit("clientUpdate", {pos: this.pos, name: localStorage.getItem("username")})
     }
 
 }
