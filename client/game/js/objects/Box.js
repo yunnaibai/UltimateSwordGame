@@ -12,17 +12,21 @@ export class Box extends Rectangle
         this.acc = 0           // Beschleunigung
         this.onGround = false   // Gibt an, ob das Objekt auf dem Boden ist
         this.moveLeft = false   // Gibt an, ob sich das Objekt nach links bewegt
-        this.moveRight = false  // Gibt an, ob sich das Objekt nach rechts bewegt
+        this.moveRight = false
+        this.moveUp = false  // Gibt an, ob sich das Objekt nach rechts bewegt
+        this.name = ""
 
         addEventListener("keydown", (e) => {
             if(e.repeat) return
             if(e.key == "ArrowRight") this.moveRight = true
             if (e.key == "ArrowLeft") this.moveLeft = true
+            if(e.key == "ArrowUp") this.moveUp = true
         })
         addEventListener("keyup", (e) => {
             if(e.repeat) return
             if(e.key == "ArrowRight") this.moveRight = false
             if (e.key == "ArrowLeft") this.moveLeft = false
+            if(e.key == "ArrowUp") this.moveUp = false
         })
     }
 
@@ -56,11 +60,21 @@ export class Box extends Rectangle
         }
     }
     move(){
-        //Perforamnce? Werden mehrere Listner gestartet?
         if(this.moveRight == true){
             this.vel[0] = 0.5
         } else if(this.moveLeft == true){
             this.vel[0] = -0.5
         }
+        if(this.moveUp == true && this.onGround == true){
+            this.onGround = false
+            this.vel[1] = -1.5
+            console.log("Up")
+        }
+        //console.log(this.vel[1])
     }
+
+    sendClientData(socket){
+        socket.emit("player", {pos: this.pos, name: localStorage.getItem("username")})
+    }
+
 }

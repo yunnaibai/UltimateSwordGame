@@ -1,16 +1,11 @@
 {
   "userdata": [
     {
-      "name": "Lenny",
+      "name": "Lennard",
       "salt": "$2b$10$jCjbWeUGShFQhVlkSib2bO",
       "password": "06789bf5fec8e6a97f31599f50dacef6213eaf0433c50562414490173e08ac9cca7ecff607853fb0c0267295234d70f3e4d94e56869f332fac46de11e9a60d78",
-      "expiration": 1645543799804,
-      "access_token": "01cd43f2cff0e071fa2490feb600483bfb200847a4f7b2680e36d0c69e8403fe0bc4d1b96789a4dae837b847bd86d583c0ab2764817d44ee435faa3baa17d415"
-    },
-    {
-      "name": "Lennard",
-      "salt": "$2b$10$R4Trg7FzgpGkpPOPQGpN9O",
-      "password": "ba335df877fb698f26f4c003cc83e6e1b5f1ca5499289ca940d423bcd788ed2c93a6b7b0295442c7626ea860810a3af0867628b65183e382d81537b820bfa9ff"
+      "expiration": 1645612056253,
+      "access_token": "faaa450c1d3ac047d5b82c74d85ee08219e7853ef1426a2fef05b154b610e776100245ad71bae7781e251aff24be0cfbf51a2d47b475429030abd20aa704d0e8"
     },
     {
       "name": "Len",

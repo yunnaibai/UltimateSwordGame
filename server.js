@@ -133,7 +133,6 @@ io.on('connection', (socket) => {
     socket.on("player", (data) => {
         const doNotDup = () => {
             if(playerData.players.length == 0) playerData.players.push({pos: [0, 0], name: data.name})
-
             for(player of playerData.players){
                 if(player.name == data.name){
                     player.pos = data.pos
@@ -144,8 +143,8 @@ io.on('connection', (socket) => {
             playerData.players.push(data)
         }
         doNotDup()
-        console.clear()
-        console.log(playerData.players)
+        //console.clear()
+        //console.log(playerData.players)
     })
     
     socket.on('disconnect', () => {
