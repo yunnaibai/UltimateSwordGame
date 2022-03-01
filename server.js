@@ -154,25 +154,6 @@ io.on('connection', (socket) => {
         }
     })
 
-
-    /*
-    socket.on("player", (data) => {
-        const doNotDup = () => {
-            if(playerData.players.length == 0) playerData.players.push({pos: [0, 0], name: data.name})
-            for(player of playerData.players){
-                if(player.name == data.name){
-                    player.pos = data.pos
-                    return
-                    //console.log("user updated")
-                }
-            }
-            playerData.players.push(data)
-        }
-        doNotDup()
-        //console.clear()
-        //console.log(playerData.players)
-    })
-    */
     socket.on('disconnect', () => {
       console.log('[GameServer] Client disconnected');
     });
@@ -180,7 +161,7 @@ io.on('connection', (socket) => {
 
 setInterval(() => {
     io.sockets.emit("updatePlayers", players)
-}, 2000) //1000/6
+}, 1000/120) //1000/6
 
 
 

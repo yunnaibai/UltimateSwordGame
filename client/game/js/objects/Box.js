@@ -14,7 +14,8 @@ export class Box extends Rectangle
         this.moveLeft = false   // Gibt an, ob sich das Objekt nach links bewegt
         this.moveRight = false
         this.moveUp = false  // Gibt an, ob sich das Objekt nach rechts bewegt
-        this.name = ""
+        this.name = options.name
+        this.disableVel = options.disableVel
 
         addEventListener("keydown", (e) => {
             if(e.repeat) return
@@ -32,11 +33,11 @@ export class Box extends Rectangle
     }
 
     update(deltaTime){
-            this.vel[0] += this.acc * deltaTime
-            this.vel[0] *= (1 - this.friction)
-            this.vel[1] += this.grav * deltaTime
-            this.pos[0] += this.vel[0] * deltaTime
-            this.pos[1] += this.vel[1] * deltaTime
+        this.vel[0] += this.acc * deltaTime
+        this.vel[0] *= (1 - this.friction)
+        this.vel[1] += this.grav * deltaTime
+        this.pos[0] += this.vel[0] * deltaTime
+        this.pos[1] += this.vel[1] * deltaTime
             //console.log(Math.round(this.vel[0] * 100) / 100)
     }
 
@@ -69,7 +70,7 @@ export class Box extends Rectangle
         if(this.moveUp == true && this.onGround == true){
             this.onGround = false
             this.vel[1] = -1.5
-            console.log("Up")
+            //console.log("Up")
         }
         //console.log(this.vel[1])
     }

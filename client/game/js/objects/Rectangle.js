@@ -55,6 +55,7 @@ export class Rectangle
     {
         ctx.fillStyle = this.color
         ctx.fillRect(this.pos[0], this.pos[1], this.size[0], this.size[1])
+        //ctx.fillRect(this.pos[0], this.pos[1], this.size[0], this.size[1])
     }
 
     collision(b)
