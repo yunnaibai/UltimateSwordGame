@@ -24,6 +24,11 @@ socket.emit("clientJoin", {pos: clientPlayer.pos, name: localStorage.getItem("us
 
 const players = new Players(socket)
 
+        //let a = [{name: "a"}, {name: "b"}, {name: "c"}, {name: "d"}]
+        //let b = [{name: "a"}, {name: "b"}, {name: "c"}, {name: "d"}, {name: "e"}]
+
+        //console.log("obj:", players.searchAdded(b, a))
+
 //let i = 0;
 
 timer.update = (deltaTime) => 
@@ -38,7 +43,7 @@ timer.update = (deltaTime) =>
     clientPlayer.update(deltaTime)
     clientPlayer.inLevelBounds()
     clientPlayer.move()
-    //clientPlayer.draw()
+    clientPlayer.draw()
 
     players.updatePlayers(deltaTime)
 }

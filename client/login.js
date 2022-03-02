@@ -79,10 +79,10 @@ const register = () => {
     })
     .then(res => {
         if(!res.ok){
-            console.log("res: false")
+            //console.log("res: false")
             return {salt: false}
         }else{
-            console.log("try to read json")
+            //console.log("try to read json")
             return res.json()
         }
     }).then(data => {
@@ -98,9 +98,14 @@ const register = () => {
                 salt: data.salt
             })
         }).then((res) => {
-            if(!res.ok) return false
+            if(!res.ok){
+                displayError()
+                console.log("error")
+                return false
+            } 
             return res.json()
         }).then((data) => {
+            displayCorrect()
             console.log(data)
         })
     })

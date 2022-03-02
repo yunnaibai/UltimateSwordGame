@@ -11,13 +11,37 @@ export class Players
             console.log(data)
             this.addPlayer(data.pos, data.name)
         })
-    }
-    searchdupe = (array1, array2) => {
+        
 
+        
+    }
+    searchAdded(serverData, clientPlayers){
+        
+        if(serverData.length > clientPlayers.length){
+            let output = []
+            //console.log("serverData ist größer")
+            let bool = false
+            for(let i of serverData){
+                //if(i.name == localStorage.getItem("username")) return
+                //console.log(i)
+                bool = false
+                for(let j of clientPlayers){
+                    if(i.name == j.name){
+                        bool = true
+                        break
+                    }
+                }
+                if(!bool){
+                    output.push(i)
+                }
+            }
+            return output
+        }else if(serverData.length < clientPlayers.length){
+            console.log("spieler weniger => entferne aus Liste")
+        }
     }
 
     addPlayer(pos, name){
-        //if(name == localStorage.getItem("username")) return
         const player = new Box({
             pos: pos,
             size: [50, 50],
@@ -29,7 +53,7 @@ export class Players
         //this.players.push(player)
 
         console.log(`Player ${name} added`)
-        console.log(this.players)
+        //console.log(this.players)
     }
 
     delPlayer(name){
@@ -47,8 +71,12 @@ export class Players
                 }
             }
         }
-        if(this.players.length > data.length || this.players.length < data.length){
-            console.log("player length error") //wenn jemand joined bevor man joined weiß der zweite das nich der muss es durch data erfahren wenn etwas dazu kommt bzw. weg geht
+        if(this.players.length < data.length){
+            this.searchAdded(data, this.players).forEach(e => {
+                this.addPlayer(e.pos, e.name)
+                
+            })
+            //this.addPlayer(this.searchAdded(data, this.players).pos, this.searchAdded(data, this.players).name)
         }
     }
     
@@ -60,7 +88,7 @@ export class Players
         } 
         //console.log(this.players)
         for(let player of this.players){
-            console.log("update:", player.name)
+            //console.log("update:", player.name)
             //player.update(deltaTime) keine berechnung keine bewegung easy
             player.draw()
             player.inLevelBounds()
