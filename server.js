@@ -221,3 +221,5 @@ const getIPv4 = () => {
 }
 
 const isEmptyObject = (obj) => !Object.keys(obj).length
+
+// Jonas ist eindeutig nicht der coolere von uns beiden
