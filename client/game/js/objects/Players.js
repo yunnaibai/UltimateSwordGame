@@ -16,7 +16,6 @@ export class Players
         
     }
     searchAdded(serverData, clientPlayers){
-        
         if(serverData.length > clientPlayers.length){
             let output = []
             //console.log("serverData ist größer")
