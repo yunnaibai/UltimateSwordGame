@@ -19,8 +19,7 @@ const clientPlayer = new Box({
     name: localStorage.getItem("username")
 })
 
-socket.emit("clientJoin", {pos: clientPlayer.pos, name: localStorage.getItem("username")})
-
+clientPlayer.joinServer(socket)
 
 const players = new Players(socket)
 

@@ -77,7 +77,16 @@ export class Box extends Rectangle
     }
 
     sendClientData(socket){
-        socket.emit("clientUpdate", {pos: this.pos, name: localStorage.getItem("username")})
+        let tmpVel = [Math.round(this.vel[0] * 10000) / 10000, Math.round(this.vel[1] * 100) / 100]
+        //let tmpVel = [this.vel[0], this.vel[1]]
+        //console.log("vel:", tmpVel)
+        socket.emit("clientUpdate", {vel: tmpVel, name: localStorage.getItem("username")})
+    }
+    joinServer(socket){
+        let tmpVel = [Math.round(this.vel[0] * 10000) / 10000, Math.round(this.vel[1] * 100) / 100]
+        //let tmpVel = [this.vel[0], this.vel[1]]
+        //console.log("vel join:", tmpVel)
+        socket.emit("clientJoin", {vel: tmpVel, name: localStorage.getItem("username")})
     }
 
 }

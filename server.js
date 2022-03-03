@@ -140,9 +140,11 @@ io.on('connection', (socket) => {
     console.log(`[GameServer] ${socket.handshake.address}`);
 
     socket.on("clientJoin", (data) => {
+        //console.clear()
+        //console.log("data:",data)
         if(nonDupeNames(data, players)){
-            players.push({pos: data.pos, name: data.name})
-            console.log(data.name,"added!")
+            players.push({vel: data.vel, name: data.name})
+            console.log(data.name,"added!", data.vel)
             io.sockets.emit("playerJoin", data)            
         }else{
             console.log("doppelt angemeldet")
@@ -158,11 +160,12 @@ io.on('connection', (socket) => {
         }
     })
     socket.on("clientUpdate", (data) => {
+        //console.log("Hallo")
         console.clear()
         console.log(players)
         for(player of players){
             if(player.name == data.name){
-                player.pos = data.pos
+                player.vel = data.vel
             }
         }
     })

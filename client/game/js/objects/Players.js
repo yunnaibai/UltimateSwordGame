@@ -5,11 +5,12 @@ export class Players
         this.players = []
         this.socket = null
         socket.on("updatePlayers", (data) => {
-            this.updatePosPlayers(data)
+            //console.log(data)
+            this.updateVelPlayers(data)
         })
         socket.on("playerJoin", (data) => {
             console.log(data)
-            this.addPlayer(data.pos, data.name)
+            this.addPlayer(data.vel, data.name)
         })
         
 
@@ -40,32 +41,31 @@ export class Players
         }
     }
 
-    addPlayer(pos, name){
+    addPlayer(vel, name){
+        console.log(vel)
         const player = new Box({
-            pos: pos,
+            pos: [100, 100],
+            vel: [0, 0],
             size: [50, 50],
             color: "blue",
             name: name,
             disableVel: false
         })
         this.players.push(player)
-        //this.players.push(player)
-        //Kommentar
-
+        console.log(player)
         console.log(`Player ${name} added`)
-        //console.log(this.players)
     }
 
     delPlayer(name){
-        //mach dlete xD
+        //mach delete xD
     }
-    updatePosPlayers(data){
+    updateVelPlayers(data){
         if(this.players.length == data.length){
             for(let clientPlayer of this.players){
                 for(let serverData of data){
                     if(clientPlayer.name == serverData.name){
-                        clientPlayer.pos = serverData.pos
-                        //console.log("pos updated")
+                        clientPlayer.vel = serverData.vel
+                        //console.log("server:", clientPlayer.vel)
                         break
                     }
                 }
@@ -73,7 +73,7 @@ export class Players
         }
         if(this.players.length < data.length){
             this.searchAdded(data, this.players).forEach(e => {
-                this.addPlayer(e.pos, e.name)
+                this.addPlayer(e.vel, e.name)
                 
             })
             //this.addPlayer(this.searchAdded(data, this.players).pos, this.searchAdded(data, this.players).name)
@@ -83,13 +83,13 @@ export class Players
 
     updatePlayers(deltaTime){
         if(this.players.length == 0){
-            console.log("no players")
+            //console.log("no players")
             return
         } 
         //console.log(this.players)
         for(let player of this.players){
             //console.log("update:", player.name)
-            //player.update(deltaTime) keine berechnung keine bewegung easy
+            player.update(deltaTime)
             player.draw()
             player.inLevelBounds()
         }
