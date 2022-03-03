@@ -27,6 +27,7 @@ export class Players
         })
         this.players.push(player)
         //this.players.push(player)
+        //Kommentar
 
         console.log(`Player ${name} added`)
         console.log(this.players)
