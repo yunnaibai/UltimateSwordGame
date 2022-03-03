@@ -127,15 +127,28 @@ app.post('/register', (req, res) => {
 
 let players = []
 
+const nonDupeNames = (data, array) => {
+    for(let i of array){
+        if(i.name == data.name){
+            return false
+        }
+    }
+    return true
+}
+
 io.on('connection', (socket) => {
     console.log(`[GameServer] ${socket.handshake.address}`);
 
     socket.on("clientJoin", (data) => {
-        players.push({pos: data.pos, name: data.name})
-        console.log(data.name,"added!")
-        io.sockets.emit("playerJoin", data)
+        if(nonDupeNames(data, players)){
+            players.push({pos: data.pos, name: data.name})
+            console.log(data.name,"added!")
+            io.sockets.emit("playerJoin", data)            
+        }else{
+            console.log("doppelt angemeldet")
+        }
     })
-    socket.on("clientLeave", (data) => {
+    socket.on("clientLeave", (data) => { //wird so nicht funktinieren i guess
         for(player of players){
             if(player.name == data.name){
                 console.log(data.name,"removed!")
@@ -161,7 +174,7 @@ io.on('connection', (socket) => {
 
 setInterval(() => {
     io.sockets.emit("updatePlayers", players)
-}, 1000/120) //1000/6
+}, 1000/60) //1000/6
 
 
 
@@ -208,3 +221,5 @@ const getIPv4 = () => {
 }
 
 const isEmptyObject = (obj) => !Object.keys(obj).length
+
+// Jonas ist eindeutig nicht der coolere von uns beiden

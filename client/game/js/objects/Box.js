@@ -18,16 +18,17 @@ export class Box extends Rectangle
         this.disableVel = options.disableVel
 
         addEventListener("keydown", (e) => {
+            //console.log(e.key)
             if(e.repeat) return
-            if(e.key == "ArrowRight") this.moveRight = true
-            if (e.key == "ArrowLeft") this.moveLeft = true
-            if(e.key == "ArrowUp") this.moveUp = true
+            if(e.key == "ArrowRight" || e.key == "d") this.moveRight = true
+            if (e.key == "ArrowLeft" || e.key == "a") this.moveLeft = true
+            if(e.key == "ArrowUp" || e.key == "w") this.moveUp = true
         })
         addEventListener("keyup", (e) => {
             if(e.repeat) return
-            if(e.key == "ArrowRight") this.moveRight = false
-            if (e.key == "ArrowLeft") this.moveLeft = false
-            if(e.key == "ArrowUp") this.moveUp = false
+            if(e.key == "ArrowRight" || e.key == "d") this.moveRight = false
+            if (e.key == "ArrowLeft" || e.key == "a") this.moveLeft = false
+            if(e.key == "ArrowUp" || e.key == "w") this.moveUp = false
         })
 
     }
@@ -63,9 +64,9 @@ export class Box extends Rectangle
     }
     move(){
         if(this.moveRight == true){
-            this.vel[0] = 0.5
+            this.vel[0] = 0.7
         } else if(this.moveLeft == true){
-            this.vel[0] = -0.5
+            this.vel[0] = -0.7
         }
         if(this.moveUp == true && this.onGround == true){
             this.onGround = false
