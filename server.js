@@ -139,30 +139,24 @@ const nonDupeNames = (data, array) => {
 io.on('connection', (socket) => {
     console.log(`[GameServer] ${socket.handshake.address}`);
 
+    let username = "unknown";
+
     socket.on("clientJoin", (data) => {
         //console.clear()
         //console.log("data:",data)
         if(nonDupeNames(data, players)){
             players.push({vel: data.vel, name: data.name})
             console.log(data.name,"added!", data.vel)
+            username = data.name;
             io.sockets.emit("playerJoin", data)            
         }else{
             console.log("doppelt angemeldet")
         }
     })
-    socket.on("clientLeave", (data) => { //wird so nicht funktinieren i guess
-        for(player of players){
-            if(player.name == data.name){
-                console.log(data.name,"removed!")
-                //remove player in array
-                io.sockets.emit("playerLeave", data)
-            }
-        }
-    })
     socket.on("clientUpdate", (data) => {
         //console.log("Hallo")
         console.clear()
-        console.log(players)
+        console.table(players)
         for(player of players){
             if(player.name == data.name){
                 player.vel = data.vel
@@ -172,6 +166,16 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       console.log('[GameServer] Client disconnected');
+      let i = 0;
+      for(player of players){
+        if(username == player.name){
+            players.splice(i, 1);
+            //console.table(players)
+            //console.log(i)
+            //console.log("spliced:", player.name)
+        }
+        i++;
+    }
     });
 });
 

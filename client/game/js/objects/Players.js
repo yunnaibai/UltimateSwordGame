@@ -9,7 +9,7 @@ export class Players
             this.updateVelPlayers(data)
         })
         socket.on("playerJoin", (data) => {
-            console.log(data)
+            //console.log(data)
             this.addPlayer(data.vel, data.name)
         })
         
@@ -36,28 +36,54 @@ export class Players
                 }
             }
             return output
-        }else if(serverData.length < clientPlayers.length){
-            console.log("spieler weniger => entferne aus Liste")
+        }
+    }
+    searchRemoved(serverData, clientPlayers){
+        if(serverData.length < clientPlayers.length){
+            let output = []
+            console.log("clientPlayers ist größer")
+            let bool = false
+            for(let i of clientPlayers){
+                bool = false
+                for(let j of serverData){
+                    if(i.name == j.name){
+                        bool = true
+                        break
+                    }
+                }
+                if(!bool){
+                    output.push(i)
+                    //console.log("spieler weniger => " + i.name)
+                }
+            }
+            return output
         }
     }
 
     addPlayer(vel, name){
-        console.log(vel)
+        //console.log(vel)
         const player = new Box({
             pos: [100, 100],
             vel: [0, 0],
             size: [50, 50],
             color: "blue",
             name: name,
-            disableVel: false
+            physics: false
         })
         this.players.push(player)
-        console.log(player)
+        //console.log(player)
         console.log(`Player ${name} added`)
     }
 
     delPlayer(name){
-        //mach delete xD
+        let i = 0;
+      for(let player of this.players){
+        if(name == player.name){
+            this.players.splice(i, 1);
+            //console.log("spliced:", player.name)
+        }
+        i++;
+    }
     }
     updateVelPlayers(data){
         if(this.players.length == data.length){
@@ -74,9 +100,12 @@ export class Players
         if(this.players.length < data.length){
             this.searchAdded(data, this.players).forEach(e => {
                 this.addPlayer(e.vel, e.name)
-                
             })
-            //this.addPlayer(this.searchAdded(data, this.players).pos, this.searchAdded(data, this.players).name)
+        }else if(this.players.length > data.length){
+            this.searchRemoved(data, this.players).forEach(e => {
+                this.delPlayer(e.name)
+                //console.log("del:", e.name)
+            })
         }
     }
     

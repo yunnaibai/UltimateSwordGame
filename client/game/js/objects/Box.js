@@ -15,7 +15,7 @@ export class Box extends Rectangle
         this.moveRight = false
         this.moveUp = false  // Gibt an, ob sich das Objekt nach rechts bewegt
         this.name = options.name
-        this.disableVel = options.disableVel
+        this.physics = options.physics
 
         addEventListener("keydown", (e) => {
             //console.log(e.key)
@@ -37,6 +37,7 @@ export class Box extends Rectangle
         this.vel[0] += this.acc * deltaTime
         this.vel[0] *= (1 - this.friction)
         this.vel[1] += this.grav * deltaTime
+
         this.pos[0] += this.vel[0] * deltaTime
         this.pos[1] += this.vel[1] * deltaTime
             //console.log(Math.round(this.vel[0] * 100) / 100)

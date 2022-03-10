@@ -16,7 +16,8 @@ const clientPlayer = new Box({
     pos: [100, 100],
     size: [50, 50],
     color: "red",
-    name: localStorage.getItem("username")
+    name: localStorage.getItem("username"),
+    physics: true
 })
 
 clientPlayer.joinServer(socket)
