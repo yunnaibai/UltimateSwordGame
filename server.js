@@ -1,6 +1,6 @@
 const express = require('express')
 const path = require('path')
-const http = require('http')
+const https = require('https')
 const socketio = require('socket.io')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
@@ -9,7 +9,10 @@ const console = require('console')
 
 const PORT = process.env.PORT || 8080
 const app = express()
-const server = http.createServer(app)
+const server = https.createServer({
+    key: fs.readFileSync("./cert/key.pem"),
+    cert: fs.readFileSync("./cert/cert.pem")
+}, app)
 const io = socketio(server);
 
 
@@ -18,7 +21,7 @@ app.use(express.static(path.join(__dirname, 'client')))
 
 //Start Server
 server.listen(PORT, () => {
-    console.log(`Connection: http://${getIPv4()}:${PORT}`)
+    console.log(`Connection: https://${getIPv4()}:${PORT}`)
 })
 
 //MIDDLEWARE
