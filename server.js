@@ -137,54 +137,53 @@ const nonDupeNames = (data, array) => {
 }
 
 io.on('connection', (socket) => {
-    console.log(`[GameServer] ${socket.handshake.address}`);
-
+    
     let username = "unknown";
 
     socket.on("clientJoin", (data) => {
         //console.clear()
         //console.log("data:",data)
         if(nonDupeNames(data, players)){
-            players.push({vel: data.vel, name: data.name})
-            console.log(data.name,"added!", data.vel)
+            players.push({name: data.name, vel: data.vel, pos: data.pos})
+            //console.log(data.name,"added!", data.vel)
             username = data.name;
-            io.sockets.emit("playerJoin", data)            
-        }else{
-            console.log("doppelt angemeldet")
+            io.sockets.emit("playerJoin", data)    
+            console.log(`[GameServer] ${username} connected`);        
         }
     })
+    let refreshTableLog = 0;
     socket.on("clientUpdate", (data) => {
-        //console.log("Hallo")
+
+        refreshTableLog++;
+        if(refreshTableLog % 10 == 0){
         console.clear()
+        if(!isEmptyObject(players)){
         console.table(players)
+        }else{
+            console.log("[GameServer] Restart or start Clients!")
+        }
+        }
+
         for(player of players){
             if(player.name == data.name){
                 player.vel = data.vel
+                player.pos = data.pos
+                socket.emit("updatePlayers", players)
             }
         }
     })
 
     socket.on('disconnect', () => {
-      console.log('[GameServer] Client disconnected');
+      console.log(`[GameServer] ${username} disconnected`);
       let i = 0;
       for(player of players){
         if(username == player.name){
             players.splice(i, 1);
-            //console.table(players)
-            //console.log(i)
-            //console.log("spliced:", player.name)
         }
         i++;
     }
     });
 });
-
-setInterval(() => {
-    io.sockets.emit("updatePlayers", players)
-}, 1000/60) //1000/6
-
-
-
 
 const parseJSON = (path, callback) => {
     fs.readFile(path, 'utf-8', (err, data) => {

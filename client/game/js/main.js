@@ -1,8 +1,8 @@
-import {Box} from "./objects/Box.js"
+import {Box} from "./objects/Player.js"
 import {clearCanvas} from "./canvas.js"
 import {timer} from "./Timer.js"
 import {levelSize} from "./Level.js"
-import {Players} from "./objects/Players.js"
+import {Players} from "./objects/PlayerHandler.js"
 import auth from "../../auth.js"
 
 const socket = io();
@@ -23,13 +23,6 @@ const clientPlayer = new Box({
 clientPlayer.joinServer(socket)
 
 const players = new Players(socket)
-
-        //let a = [{name: "a"}, {name: "b"}, {name: "c"}, {name: "d"}]
-        //let b = [{name: "a"}, {name: "b"}, {name: "c"}, {name: "d"}, {name: "e"}]
-
-        //console.log("obj:", players.searchAdded(b, a))
-
-//let i = 0;
 
 timer.update = (deltaTime) => 
 {

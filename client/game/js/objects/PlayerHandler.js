@@ -1,4 +1,4 @@
-import {Box} from "./Box.js"
+import {Box} from "./Player.js"
 export class Players 
 {
     constructor(socket){
@@ -13,17 +13,13 @@ export class Players
             this.addPlayer(data.vel, data.name)
         })
         
-
-        
     }
+    
     searchAdded(serverData, clientPlayers){
         if(serverData.length > clientPlayers.length){
             let output = []
-            //console.log("serverData ist größer")
             let bool = false
             for(let i of serverData){
-                //if(i.name == localStorage.getItem("username")) return
-                //console.log(i)
                 bool = false
                 for(let j of clientPlayers){
                     if(i.name == j.name){
@@ -31,9 +27,7 @@ export class Players
                         break
                     }
                 }
-                if(!bool){
-                    output.push(i)
-                }
+                if(!bool) output.push(i)
             }
             return output
         }
@@ -51,10 +45,7 @@ export class Players
                         break
                     }
                 }
-                if(!bool){
-                    output.push(i)
-                    //console.log("spieler weniger => " + i.name)
-                }
+                if(!bool) output.push(i)
             }
             return output
         }
@@ -68,7 +59,7 @@ export class Players
             size: [50, 50],
             color: "blue",
             name: name,
-            physics: false
+            physics: true
         })
         this.players.push(player)
         //console.log(player)
@@ -90,8 +81,9 @@ export class Players
             for(let clientPlayer of this.players){
                 for(let serverData of data){
                     if(clientPlayer.name == serverData.name){
+
                         clientPlayer.vel = serverData.vel
-                        //console.log("server:", clientPlayer.vel)
+                        clientPlayer.pos = serverData.pos
                         break
                     }
                 }
@@ -104,7 +96,6 @@ export class Players
         }else if(this.players.length > data.length){
             this.searchRemoved(data, this.players).forEach(e => {
                 this.delPlayer(e.name)
-                //console.log("del:", e.name)
             })
         }
     }
