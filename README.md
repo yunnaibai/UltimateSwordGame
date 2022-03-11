@@ -11,22 +11,18 @@
 
 ## Code (Backend)
 
- - [ ] Timing Attacks mit Crypto verhindern (if abfragen durch eine copare funktion ersetzten)
  - [ ] Anderes Hash-Verfahren benutzten um generierung von diesen zu entschleunigen
  - [x] Auf API Zugriff zurückgreifen statt Socket.io (z.B Rest, Express)
- - [ ] Code Refactoring :(
- - [ ] Datenbank benutzen statt nur einer json Datei (MongoDB? Overengineering?)
+ - [x] Datenbank benutzen statt nur einer json Datei (MongoDB? Overengineering?)
 
 ## Design
 
  - [ ] Icon(s) hinzufügen
  - [ ] Schiebe-Dings wenn man über die Login/Register Page hovert (zusätzliche Informationen darauf)
  - [ ] About anpassen
- - [ ] Animierte Icons im Header für Verlinkungen (z.B für Game Assets Ersteller oder Libraries)
 
 
 ## Große Ziele
 
- - [ ] Jonas **beibringen** JavaScript **zu lernen**
  - [ ] Code kommentieren
 
