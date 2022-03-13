@@ -12,6 +12,8 @@ export class NameTag extends Rectangle{
         ctx.font = "18px Arial"
         ctx.fillStyle = "white"
         ctx.textAlign = "center"
-        ctx.fillText(`${this.name} : ${this.lives} ❤`, this.pos[0] + 50, this.pos[1] + 16)
+        let text = `${this.name} - ${this.lives} ❤`
+        ctx.fillText(text, this.pos[0] + this.size[0] / 2, this.pos[1] + 17)
+        this.size[0] = ctx.measureText(text).width + 20
     }
 }

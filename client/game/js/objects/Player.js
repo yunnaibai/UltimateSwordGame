@@ -21,7 +21,7 @@ export class Box extends Rectangle
         this.lives = 5
         this.nametag = new NameTag({
             pos: [this.pos[0], this.pos[1]],
-            size: [100, 20],
+            size: [100, 22],
             color: "purple",
             name: this.name
         })
@@ -53,9 +53,10 @@ export class Box extends Rectangle
         this.pos[0] += this.vel[0] * deltaTime
         this.pos[1] += this.vel[1] * deltaTime
 
-        this.nametag.pos[0] = this.pos[0] - 25
+
+        //NameTag
+        this.nametag.pos[0] = this.pos[0] - this.nametag.size[0] / 2 + this.size[0] / 2
         this.nametag.pos[1] = this.pos[1] - 50
-            //console.log(Math.round(this.vel[0] * 100) / 100)
         this.nametag.draw()
         this.nametag.drawText()
         this.nametag.lives = this.lives
