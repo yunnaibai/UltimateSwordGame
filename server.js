@@ -155,24 +155,25 @@ io.on('connection', (socket) => {
         }
     })
     let refreshTableLog = 0;
-    socket.on("clientUpdate", (data) => {
+    socket.on("clientUpdate", (data) => { //Wird aufgerufen wenn Spieler Daten sendet
 
+        //Anzeigen der derzeitigen Spieler
         refreshTableLog++;
         if(refreshTableLog % 10 == 0){
         console.clear()
         if(!isEmptyObject(players)){
-        console.table(players)
+        console.table(players) 
         }else{
             console.log("[GameServer] Restart or start Clients!")
         }
         }
 
-        for(player of players){
+        for(player of players){ //Updaten des Spieler Arrays mit neuen Daten
             if(player.name == data.name){
                 player.vel = data.vel
-                player.pos = data.pos
-                player.lives = data.lives
-                socket.emit("updatePlayers", players)
+                player.pos = data.pos //02.03 hinzugefügt
+                player.lives = data.lives //12.03 hinzugefügt
+                socket.emit("updatePlayers", players) //Der Spieler bekommt alle Daten die der Server im Players Array hat wieder
             }
         }
     })
