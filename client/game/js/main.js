@@ -14,7 +14,7 @@ document.getElementById("canvas").setAttribute("height", levelSize[1])
 
 const clientPlayer = new Box({
     pos: [100, 100],
-    size: [50, 50],
+    size: [50, 100],
     color: "red",
     name: localStorage.getItem("username"),
     physics: true

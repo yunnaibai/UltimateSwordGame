@@ -56,11 +56,13 @@ export class Players
         const player = new Box({
             pos: [100, 100],
             vel: [0, 0],
-            size: [50, 50],
+            size: [50, 100],
             color: "blue",
             name: name,
             physics: true
         })
+
+
         this.players.push(player)
         //console.log(player)
         console.log(`Player ${name} added`)
@@ -109,9 +111,11 @@ export class Players
         //console.log(this.players)
         for(let player of this.players){
             //console.log("update:", player.name)
+            if(player.name != localStorage.getItem("username")){
             player.update(deltaTime)
             player.draw()
             player.inLevelBounds()
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 import {Rectangle} from "./Rectangle.js"
 import {levelSize} from "../Level.js"
+import {NameTag} from "./NameTag.js"
 
 export class Box extends Rectangle 
 {
@@ -16,6 +17,14 @@ export class Box extends Rectangle
         this.moveUp = false  // Gibt an, ob sich das Objekt nach rechts bewegt
         this.name = options.name
         this.physics = options.physics
+        this.lives = options.lives
+        this.lives = 5
+        this.nametag = new NameTag({
+            pos: [this.pos[0], this.pos[1]],
+            size: [100, 20],
+            color: "purple",
+            name: this.name
+        })
 
         addEventListener("keydown", (e) => {
             //console.log(e.key)
@@ -31,6 +40,7 @@ export class Box extends Rectangle
             if(e.key == "ArrowUp" || e.key == "w") this.moveUp = false
         })
 
+
     }
 
     update(deltaTime){
@@ -42,7 +52,13 @@ export class Box extends Rectangle
 
         this.pos[0] += this.vel[0] * deltaTime
         this.pos[1] += this.vel[1] * deltaTime
+
+        this.nametag.pos[0] = this.pos[0] - 25
+        this.nametag.pos[1] = this.pos[1] - 50
             //console.log(Math.round(this.vel[0] * 100) / 100)
+        this.nametag.draw()
+        this.nametag.drawText()
+        this.nametag.lives = this.lives
     }
 
     inLevelBounds(){
@@ -82,12 +98,12 @@ export class Box extends Rectangle
     sendClientData(socket){
         let tmpVel = [Math.round(this.vel[0] * 10000) / 10000, Math.round(this.vel[1] * 10000) / 10000]
         let tmpPos = [Math.round(this.pos[0] * 10000) / 10000, Math.round(this.pos[1] * 10000) / 10000]
-        socket.emit("clientUpdate", {vel: tmpVel, pos: tmpPos, name: localStorage.getItem("username")})
+        socket.emit("clientUpdate", {vel: tmpVel, pos: tmpPos, name: localStorage.getItem("username"), lives: this.lives})
     }
     joinServer(socket){
         let tmpVel = [Math.round(this.vel[0] * 10000) / 10000, Math.round(this.vel[1] * 10000) / 10000]
         let tmpPos = [Math.round(this.pos[0] * 10000) / 10000, Math.round(this.pos[1] * 10000) / 10000]
-        socket.emit("clientJoin", {vel: tmpVel, pos: tmpPos, name: localStorage.getItem("username")})
+        socket.emit("clientJoin", {vel: tmpVel, pos: tmpPos, name: localStorage.getItem("username"), lives: this.lives})
     }
 
 }

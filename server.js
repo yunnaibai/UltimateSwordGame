@@ -171,6 +171,7 @@ io.on('connection', (socket) => {
             if(player.name == data.name){
                 player.vel = data.vel
                 player.pos = data.pos
+                player.lives = data.lives
                 socket.emit("updatePlayers", players)
             }
         }
