@@ -12,7 +12,7 @@
 ## Code (Backend)
 
  - [ ] Anderes Hash-Verfahren benutzten um generierung von diesen zu entschleunigen
- - [x] Auf API Zugriff zurückgreifen statt Socket.io (z.B Rest, Express)
+ - [x] Auf API zurückgreifen statt Socket.io (z.B Rest, Express)
  - [x] Datenbank benutzen statt nur einer json Datei (MongoDB? Overengineering?)
 
 ## Design
