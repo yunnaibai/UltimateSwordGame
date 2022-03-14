@@ -35,7 +35,6 @@ export class Players
     searchRemoved(serverData, clientPlayers){
         if(serverData.length < clientPlayers.length){
             let output = []
-            console.log("clientPlayers ist größer")
             let bool = false
             for(let i of clientPlayers){
                 bool = false
@@ -59,7 +58,7 @@ export class Players
             size: [50, 100],
             color: "blue",
             name: name,
-            physics: true
+            clientPlayer: false
         })
 
 
@@ -72,8 +71,8 @@ export class Players
         let i = 0;
       for(let player of this.players){
         if(name == player.name){
+            console.log(`Player ${name} disconnected`)
             this.players.splice(i, 1);
-            //console.log("spliced:", player.name)
         }
         i++;
     }

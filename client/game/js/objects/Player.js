@@ -17,10 +17,10 @@ export class Box extends Rectangle
         this.moveRight = false
         this.moveUp = false  // Gibt an, ob sich das Objekt nach rechts bewegt
         this.name = options.name
-        this.physics = options.physics
+        this.clientPlayer = options.clientPlayer
         this.lives = options.lives
         this.lives = 5
-        this.swing = false
+        this.lastVel = 0
         this.nametag = new NameTag({
             pos: [this.pos[0], this.pos[1]],
             size: [100, 22],
@@ -30,32 +30,33 @@ export class Box extends Rectangle
         this.sword = new Sword({
             pos: [0, 0],
             playerPos: [0, 0],
+            side: true,
             size: [10, 100],
             color: "purple"
         })
-
-        addEventListener("keydown", (e) => {
-            //console.log(e.key)
-            if(e.repeat) return
-            if(e.key == "ArrowRight" || e.key == "d") this.moveRight = true
-            if (e.key == "ArrowLeft" || e.key == "a") this.moveLeft = true
-            if(e.key == "ArrowUp" || e.key == "w") this.moveUp = true
-            if(e.key == " ") this.swing = true
-        })
-        addEventListener("keyup", (e) => {
-            if(e.repeat) return
-            if(e.key == "ArrowRight" || e.key == "d") this.moveRight = false
-            if (e.key == "ArrowLeft" || e.key == "a") this.moveLeft = false
-            if(e.key == "ArrowUp" || e.key == "w") this.moveUp = false
-            if(e.key == " ") this.swing = false
-        })
-
+        if(this.clientPlayer){
+            addEventListener("keydown", (e) => {
+                //console.log(e.key)
+                if(e.repeat) return
+                if(e.key == "ArrowRight" || e.key == "d") this.moveRight = true
+                if (e.key == "ArrowLeft" || e.key == "a") this.moveLeft = true
+                if(e.key == "ArrowUp" || e.key == "w") this.moveUp = true
+                if(e.key == " ") this.sword.active = true
+            })
+            addEventListener("keyup", (e) => {
+                if(e.repeat) return
+                if(e.key == "ArrowRight" || e.key == "d") this.moveRight = false
+                if (e.key == "ArrowLeft" || e.key == "a") this.moveLeft = false
+                if(e.key == "ArrowUp" || e.key == "w") this.moveUp = false
+                if(e.key == " ") this.sword.active = false
+            })
+        }
 
     }
 
     update(deltaTime){
         this.vel[0] += this.acc * deltaTime
-        if(this.physics){
+        if(this.clientPlayer){
         this.vel[0] *= (1 - this.friction)
         }
         this.vel[1] += this.grav * deltaTime
@@ -71,11 +72,20 @@ export class Box extends Rectangle
         this.nametag.drawText()
 
         //Sword
-        this.sword.playerPos[0] = this.pos[0] + 60
-        this.sword.playerPos[1] = this.pos[1] - 20
-        this.sword.drawSword()
-        this.sword.swing(this.swing)
+        this.sword.playerPos[0] = this.pos[0]
+        this.sword.playerPos[1] = this.pos[1]
+        this.sword.drawSword(deltaTime)
         this.nametag.lives = this.lives
+
+        //Waffenseite wechseln
+        if(this.vel[0] != 0){
+            this.lastVel = this.vel[0]
+        }
+        if(this.lastVel < 0){
+            this.sword.side = false
+        }else if(this.lastVel > 0){
+            this.sword.side = true
+        }
     }
 
     inLevelBounds(){
@@ -104,6 +114,8 @@ export class Box extends Rectangle
         } else if(this.moveLeft == true){
             this.vel[0] = -0.7
         }
+        
+
         if(this.moveUp == true && this.onGround == true){
             this.onGround = false
             this.vel[1] = -1.5
