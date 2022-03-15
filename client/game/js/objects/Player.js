@@ -30,7 +30,6 @@ export class Box extends Rectangle
         this.sword = new Sword({
             pos: [0, 0],
             playerPos: [0, 0],
-            side: true,
             size: [10, 100],
             color: "purple"
         })
@@ -127,12 +126,12 @@ export class Box extends Rectangle
     sendClientData(socket){
         let tmpVel = [Math.round(this.vel[0] * 10000) / 10000, Math.round(this.vel[1] * 10000) / 10000]
         let tmpPos = [Math.round(this.pos[0] * 10000) / 10000, Math.round(this.pos[1] * 10000) / 10000]
-        socket.emit("clientUpdate", {vel: tmpVel, pos: tmpPos, name: localStorage.getItem("username"), lives: this.lives})
+        socket.emit("clientUpdate", {vel: tmpVel, pos: tmpPos, name: localStorage.getItem("username"), lives: this.lives, swing: this.sword.active})
     }
     joinServer(socket){
         let tmpVel = [Math.round(this.vel[0] * 10000) / 10000, Math.round(this.vel[1] * 10000) / 10000]
         let tmpPos = [Math.round(this.pos[0] * 10000) / 10000, Math.round(this.pos[1] * 10000) / 10000]
-        socket.emit("clientJoin", {vel: tmpVel, pos: tmpPos, name: localStorage.getItem("username"), lives: this.lives})
+        socket.emit("clientJoin", {vel: tmpVel, pos: tmpPos, name: localStorage.getItem("username"), lives: this.lives, swing: this.sword.active})
     }
 
 }

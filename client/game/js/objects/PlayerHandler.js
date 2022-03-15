@@ -82,9 +82,10 @@ export class Players
             for(let clientPlayer of this.players){
                 for(let serverData of data){
                     if(clientPlayer.name == serverData.name){
-
+                        clientPlayer.sword.active = serverData.swing
                         clientPlayer.vel = serverData.vel
                         clientPlayer.pos = serverData.pos
+                        //console.log(serverData)
                         break
                     }
                 }

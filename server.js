@@ -173,10 +173,12 @@ io.on('connection', (socket) => {
                 player.vel = data.vel
                 player.pos = data.pos //02.03 hinzugefügt
                 player.lives = data.lives //12.03 hinzugefügt
+                player.swing = data.swing
                 socket.emit("updatePlayers", players) //Der Spieler bekommt alle Daten die der Server im Players Array hat wieder
             }
         }
     })
+    
 
     socket.on('disconnect', () => {
       console.log(`[GameServer] ${username} disconnected`);

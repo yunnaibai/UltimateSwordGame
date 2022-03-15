@@ -5,7 +5,7 @@ export class Sword{
         this.playerPos = options.playerPos
         this.size = options.size
         this.color = options.color
-        this.side = options.side
+        this.side = true
         this.pos = [0, 0]
         this.originRotation = 0
         this.rotation
