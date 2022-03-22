@@ -142,6 +142,7 @@ const nonDupeNames = (data, array) => {
 io.on('connection', (socket) => {
     
     let username = "unknown";
+    let lastVelX = 0;
 
     socket.on("clientJoin", (data) => {
         //console.clear()
@@ -160,32 +161,42 @@ io.on('connection', (socket) => {
         //Anzeigen der derzeitigen Spieler
         refreshTableLog++;
         if(refreshTableLog % 10 == 0){
-        console.clear()
-        if(!isEmptyObject(players)){
-        console.table(players) 
-        }else{
-            console.log("[GameServer] Restart or start Clients!")
-        }
+            //console.clear()
+            if(!isEmptyObject(players)){
+                //console.table(players) 
+            }else{
+                console.log("[GameServer] Restart or start Clients!")
+            }
         }
 
-        for(player of players){ //Updaten des Spieler Arrays mit neuen Daten
+        for(let player of players){ //Updaten des Spieler Arrays mit neuen Daten
             if(player.name == data.name){
                 player.vel = data.vel
                 player.pos = data.pos //02.03 hinzugefügt
                 player.lives = data.lives //12.03 hinzugefügt
                 player.swing = data.swing
+                if(data.vel[0] != 0) lastVelX = data.vel[0]
                 socket.emit("updatePlayers", players) //Der Spieler bekommt alle Daten die der Server im Players Array hat wieder
+            }
+            //hit detection
+            if(data.swing == true && data.name != player.name){
+                //console.log(lastVelX)
+                if(lastVelX < 0){
+                    if(collision(data.pos, player.pos - 50) == true) player.lives--
+                }else if(lastVelX > 0){
+                    if(collision(data.pos, player.pos + 50) == true) player.lives--
+                }
             }
         }
     })
     
 
     socket.on('disconnect', () => {
-      console.log(`[GameServer] ${username} disconnected`);
-      let i = 0;
+      console.log(`[GameServer] ${username} disconnected`)
+      let i = 0
       for(player of players){
         if(username == player.name){
-            players.splice(i, 1);
+            players.splice(i, 1)
         }
         i++;
     }
@@ -235,4 +246,23 @@ const getIPv4 = () => {
 
 const isEmptyObject = (obj) => !Object.keys(obj).length
 
-// Jonas ist eindeutig nicht der coolere von uns beiden
+const collision = (a, b) => {
+    
+    if(a[0] + 100 >= b[0]){
+        //console.log("rechts overlap")
+        //if(a[1] >= b[1] - 200){
+            //console.log("unten overlap")
+            if(a[0] <= b[0] + 100){
+                //console.log("links overlap")
+                //if(a[1] - 200 <= b[1]){
+                    console.log("coll")
+                    return true
+                //}
+            }
+        //}
+    }
+    
+    return false
+
+}
+// Jonas ist eindeutig der coolere von uns beiden

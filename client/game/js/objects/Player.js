@@ -109,9 +109,9 @@ export class Box extends Rectangle
     }
     move(){
         if(this.moveRight == true){
-            this.vel[0] = 0.7
+            this.vel[0] = 0.2
         } else if(this.moveLeft == true){
-            this.vel[0] = -0.7
+            this.vel[0] = -0.2
         }
         
 
